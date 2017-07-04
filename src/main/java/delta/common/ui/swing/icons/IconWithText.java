@@ -10,6 +10,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import delta.common.ui.swing.draw.HaloPainter;
+
 /**
  * Icon with text display on bottom right.
  * @author DAM
@@ -91,19 +93,7 @@ public class IconWithText implements Icon
       dx+=x;
       dy+=y;
 
-      g.setColor(Color.BLACK);
-      for(int i=dx-1;i<=dx+1;i++)
-      {
-        for(int j=dy-1;j<=dy+1;j++)
-        {
-          if ((i!=dx) || (j!=dy))
-          {
-            g.drawString(_text, i, j);
-          }
-        }
-      }
-      g.setColor(_color);
-      g.drawString(_text, dx, dy);
+      HaloPainter.drawStringWithHalo(g,dx,dy,_text,_color,Color.BLACK);
     }
   }
 
