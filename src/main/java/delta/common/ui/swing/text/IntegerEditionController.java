@@ -112,4 +112,14 @@ public class IntegerEditionController
     }
     return ret;
   }
+
+  /**
+   * Release all managed resources.
+   */
+  public void dispose()
+  {
+    _textField=null;
+    _minValue=null;
+    _maxValue=null;
+  }
 }
