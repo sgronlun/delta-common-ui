@@ -77,6 +77,29 @@ public class ComboBoxController<T>
   }
 
   /**
+   * Remove an item.
+   * @param data Item to remove.
+   */
+  public void removeItem(T data)
+  {
+    ComboBoxItem<T> item=getItemForData(data);
+    if (item!=null)
+    {
+      _items.remove(item);
+      _comboBox.removeItem(item);
+    }
+  }
+
+  /**
+   * Remove all items.
+   */
+  public void removeAllItems()
+  {
+    _items.clear();
+    _comboBox.removeAll();
+  }
+
+  /**
    * Get the currently selected item.
    * @return A data item or <code>null</code> if nothing selected.
    */
