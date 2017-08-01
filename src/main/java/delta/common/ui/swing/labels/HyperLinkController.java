@@ -56,7 +56,7 @@ public class HyperLinkController
         doIt();
       }
     });
-    setText("");
+    setText("",null);
   }
 
   /**
@@ -68,19 +68,24 @@ public class HyperLinkController
     return _label;
   }
 
-  private void setText(String text)
+  private void setText(String href, String linkText)
   {
-    _text=text;
-    _label.setText("<html><a href=\"\">"+text+"</a></html>");
+    _text=href;
+    if (linkText==null)
+    {
+      linkText=href;
+    }
+    _label.setText("<html><a href=\""+href+"\">"+linkText+"</a></html>");
   }
 
   /**
    * Set the URL to browse.
    * @param url URL to browse.
+   * @param linkText Text of link (<code>null</code> to use URL).
    */
-  public void setUrl(String url)
+  public void setUrl(String url, String linkText)
   {
-    setText(url);
+    setText(url,linkText);
   }
 
   /**
@@ -90,7 +95,7 @@ public class HyperLinkController
    */
   public void configureMail(String address, String subject)
   {
-    setText(address);
+    setText(address,null);
     _subject=subject;
   }
 
