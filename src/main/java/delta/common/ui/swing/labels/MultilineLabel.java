@@ -19,12 +19,14 @@ public class MultilineLabel extends JPanel
 {
   private String[] _text;
   private int[] _baselines;
+  private Dimension _preferredSize;
 
   /**
-   * 
+   * Constructor.
    */
   public MultilineLabel()
   {
+    setOpaque(false);
     _text=new String[0];
   }
 
@@ -46,13 +48,18 @@ public class MultilineLabel extends JPanel
   public void setText(String[] text)
   {
     _text=text;
-    _baselines=new int[text.length];
+    _preferredSize=null;
     revalidate();
     repaint();
   }
 
   private Dimension computeSize()
   {
+    if (_preferredSize!=null)
+    {
+      return _preferredSize;
+    }
+    _baselines=new int[_text.length];
     Font font=getFont();
     Graphics2D graphics=(Graphics2D)getGraphics();
     Rectangle global = new Rectangle(0,0,0,0);
@@ -76,6 +83,7 @@ public class MultilineLabel extends JPanel
       baseline+=height;
     }
     Dimension ret=new Dimension(global.width,global.height);
+    _preferredSize=ret;
     return ret;
   }
 
@@ -88,6 +96,7 @@ public class MultilineLabel extends JPanel
   @Override
   protected void paintComponent(Graphics g)
   {
+    computeSize();
     int index=0;
     for(String line : _text)
     {
