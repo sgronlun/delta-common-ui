@@ -1,7 +1,6 @@
 package delta.common.ui.swing;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
@@ -61,11 +60,8 @@ public class CheckButtonController
 
   private JButton buildButton()
   {
-    JButton button=GuiFactory.buildButton("");
+    JButton button=GuiFactory.buildIconButton();
     button.setIcon(_icons[0]);
-    button.setBorderPainted(false);
-    button.setOpaque(false);
-    button.setMargin(new Insets(0,0,0,0));
     Dimension size=getIconSize();
     button.setSize(size);
     return button;

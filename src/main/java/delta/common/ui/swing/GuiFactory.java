@@ -2,6 +2,7 @@ package delta.common.ui.swing;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Paint;
 import java.awt.Rectangle;
@@ -141,6 +142,38 @@ public class GuiFactory
     JButton b=new JButton(label);
     b.setBackground(BACKGROUND);
     b.setForeground(FOREGROUND);
+    return b;
+  }
+
+  /**
+   * Get a new button designed to display an unspecified icon.
+   * @return a new button.
+   */
+  public static JButton buildIconButton()
+  {
+    JButton b=new JButton((Icon)null);
+    b.setBackground(BACKGROUND);
+    b.setForeground(FOREGROUND);
+    b.setBorderPainted(false);
+    b.setOpaque(false);
+    b.setMargin(new Insets(0,0,0,0));
+    return b;
+  }
+
+  /**
+   * Get a new button using the given icon.
+   * @param iconPath Path of icon to use.
+   * @return a new button.
+   */
+  public static JButton buildIconButton(String iconPath)
+  {
+    JButton b=buildIconButton();
+    ImageIcon icon=IconsManager.getIcon(iconPath);
+    if (icon!=null)
+    {
+      b.setIcon(icon);
+      b.setSize(icon.getIconWidth(),icon.getIconHeight());
+    }
     return b;
   }
 
