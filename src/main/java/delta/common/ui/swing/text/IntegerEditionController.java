@@ -37,6 +37,16 @@ public class IntegerEditionController
   }
 
   /**
+   * Set the graphical state of the managed gadget.
+   * @param enabled Enabled or not.
+   * @param editable Editable or not.
+   */
+  public void setState(boolean enabled, boolean editable)
+  {
+    _textField.setEnabled(enabled);
+  }
+
+  /**
    * Set the allowed value range.
    * @param minValue Minimum value, if any.
    * @param maxValue Maximum value, if any.
