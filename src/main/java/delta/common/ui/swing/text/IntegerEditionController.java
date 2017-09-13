@@ -44,6 +44,7 @@ public class IntegerEditionController
   public void setState(boolean enabled, boolean editable)
   {
     _textField.setEnabled(enabled);
+    _textField.setEditable(editable);
   }
 
   /**

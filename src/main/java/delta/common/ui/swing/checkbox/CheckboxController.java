@@ -22,6 +22,15 @@ public class CheckboxController
   }
 
   /**
+   * Set the graphical state of the managed gadget.
+   * @param enabled Enabled or not.
+   */
+  public void setState(boolean enabled)
+  {
+    _checkbox.setEnabled(enabled);
+  }
+
+  /**
    * Get the managed check-box.
    * @return the managed check-box.
    */
