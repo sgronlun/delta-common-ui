@@ -20,7 +20,7 @@ import delta.common.ui.swing.OKCancelPanelController;
 public class DefaultFormDialogController<T> extends DefaultDialogController implements ActionListener
 {
   // Data
-  private T _data;
+  protected T _data;
   // Controllers
   private OKCancelPanelController _okCancelController;
 
