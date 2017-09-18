@@ -354,7 +354,12 @@ public class GenericTableController<POJO>
    */
   public void selectItem(POJO item)
   {
-    int index=getItemIndex(item);
+    int index=-1;
+    int modelIndex=getItemIndex(item);
+    if (modelIndex!=-1)
+    {
+      index=_table.convertRowIndexToView(modelIndex);
+    }
     ListSelectionModel selectionModel=_table.getSelectionModel();
     if (index!=-1)
     {
