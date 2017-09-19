@@ -4,10 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.OKCancelPanelController;
@@ -46,6 +52,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
       Window parentWindow=controller.getWindow();
       dialog.setLocationRelativeTo(parentWindow);
     }
+    initShortcuts(dialog);
     return dialog;
   }
 
@@ -69,6 +76,40 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
     _okCancelController.getOKButton().addActionListener(al);
     _okCancelController.getCancelButton().addActionListener(al);
     return panel;
+  }
+
+  private void initShortcuts(JDialog dialog)
+  {
+    // OK
+    {
+      KeyStroke stroke=KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+      JRootPane rootPane=dialog.getRootPane();
+      InputMap inputMap=rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+      inputMap.put(stroke, OKCancelPanelController.OK_COMMAND);
+      Action action=new AbstractAction()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          ok();
+        }
+      };
+      rootPane.getActionMap().put(OKCancelPanelController.OK_COMMAND, action);
+    }
+    // Cancel
+    {
+      KeyStroke stroke=KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+      JRootPane rootPane=dialog.getRootPane();
+      InputMap inputMap=rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+      inputMap.put(stroke, OKCancelPanelController.CANCEL_COMMAND);
+      Action action=new AbstractAction()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          cancel();
+        }
+      };
+      rootPane.getActionMap().put(OKCancelPanelController.CANCEL_COMMAND, action);
+    }
   }
 
   protected JPanel buildFormPanel()
