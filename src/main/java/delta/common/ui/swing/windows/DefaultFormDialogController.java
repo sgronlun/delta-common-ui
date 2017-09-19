@@ -17,7 +17,7 @@ import delta.common.ui.swing.OKCancelPanelController;
  * @param <T> Managed data.
  * @author DAM
  */
-public class DefaultFormDialogController<T> extends DefaultDialogController implements ActionListener
+public class DefaultFormDialogController<T> extends DefaultDialogController
 {
   // Data
   protected T _data;
@@ -58,8 +58,16 @@ public class DefaultFormDialogController<T> extends DefaultDialogController impl
     _okCancelController=new OKCancelPanelController();
     JPanel okCancelPanel=_okCancelController.getPanel();
     panel.add(okCancelPanel,BorderLayout.SOUTH);
-    _okCancelController.getOKButton().addActionListener(this);
-    _okCancelController.getCancelButton().addActionListener(this);
+    ActionListener al=new ActionListener()
+    {
+      public void actionPerformed(ActionEvent event)
+      {
+        String action=event.getActionCommand();
+        handleButton(action);
+      }
+    };
+    _okCancelController.getOKButton().addActionListener(al);
+    _okCancelController.getCancelButton().addActionListener(al);
     return panel;
   }
 
@@ -69,9 +77,8 @@ public class DefaultFormDialogController<T> extends DefaultDialogController impl
     return panel;
   }
 
-  public void actionPerformed(ActionEvent event)
+  private void handleButton(String action)
   {
-    String action=event.getActionCommand();
     if (OKCancelPanelController.OK_COMMAND.equals(action))
     {
       ok();
