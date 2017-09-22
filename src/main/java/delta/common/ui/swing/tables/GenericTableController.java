@@ -36,7 +36,7 @@ public class GenericTableController<POJO>
   private DataProvider<POJO> _dataProvider;
   private Filter<POJO> _filter;
   // Columns
-  private List<TableColumnController<POJO,?>> _columns;
+  private TableColumnsManager<POJO> _columns;
   // GUI
   private JTable _table;
   private GenericTableModel<POJO> _model;
@@ -52,8 +52,17 @@ public class GenericTableController<POJO>
   {
     _dataProvider=dataProvider;
     _filter=null;
-    _columns=new ArrayList<TableColumnController<POJO,?>>();
+    _columns=new TableColumnsManager<POJO>();
     _actionListeners=new ArrayList<ActionListener>();
+  }
+
+  /**
+   * Get the columns manager.
+   * @return the columns manager.
+   */
+  public TableColumnsManager<POJO> getColumnsManager()
+  {
+    return _columns;
   }
 
   /**
@@ -122,7 +131,7 @@ public class GenericTableController<POJO>
       @Override
       protected boolean useToString(int column)
       {
-        TableColumnController<POJO,?> columnController=_columns.get(column);
+        TableColumnController<POJO,?> columnController=_columns.getAt(column);
         Boolean useToString=columnController.isUseToString();
         if (useToString!=null)
         {
@@ -180,7 +189,8 @@ public class GenericTableController<POJO>
   private void initColumns(JTable table)
   {
     int i=0;
-    for(TableColumnController<POJO,?> controller : _columns)
+    List<TableColumnController<POJO,?>> controllers=_columns.getSelectedColumns();
+    for(TableColumnController<POJO,?> controller : controllers)
     {
       TableColumn column=table.getColumnModel().getColumn(i);
       int preferredWidth=controller.getPreferredWidth();
@@ -236,16 +246,7 @@ public class GenericTableController<POJO>
    */
   public void addColumnController(TableColumnController<POJO,?> controller)
   {
-    _columns.add(controller);
-  }
-
-  /**
-   * Remove a column controller.
-   * @param controller Controller to remove.
-   */
-  public void removeColumnController(TableColumnController<POJO,?> controller)
-  {
-    _columns.remove(controller);
+    _columns.addColumnController(controller);
   }
 
   /**
@@ -255,7 +256,7 @@ public class GenericTableController<POJO>
    */
   public TableColumnController<POJO,?> getColumnController(int index)
   {
-    return _columns.get(index);
+    return _columns.getAt(index);
   }
 
   /**
@@ -264,7 +265,7 @@ public class GenericTableController<POJO>
    */
   public int getColumnCount()
   {
-    return _columns.size();
+    return _columns.getSelectedColumnsCount();
   }
 
   /**

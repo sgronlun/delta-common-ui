@@ -221,4 +221,10 @@ public class TableColumnController<POJO,VALUE>
   {
     _valueUpdater=valueUpdater;
   }
+
+  @Override
+  public String toString()
+  {
+    return _header;
+  }
 }

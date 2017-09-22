@@ -24,7 +24,6 @@ import delta.common.ui.swing.tables.DataItem.SEX;
 public class MainTestGenericTables
 {
   private GenericTableController<DataItem> _table;
-  private List<TableColumnController<DataItem,?>> _controllers=new ArrayList<TableColumnController<DataItem,?>>();
 
   private boolean _doAdd=false;
 
@@ -53,15 +52,16 @@ public class MainTestGenericTables
 
   private void updateColumns()
   {
+    TableColumnsManager<DataItem> mgr=_table.getColumnsManager();
     if (_doAdd)
     {
-      TableColumnController<DataItem,?> controller=_controllers.get(0);
-      _table.addColumnController(controller);
+      TableColumnController<DataItem,?> controller=mgr.getAvailableColumns().get(0);
+      mgr.addColumnController(controller);
     }
     else
     {
-      TableColumnController<DataItem,?> controller=_controllers.get(0);
-      _table.removeColumnController(controller);
+      TableColumnController<DataItem,?> controller=mgr.getSelectedColumns().get(0);
+      mgr.removeSelectedColumn(controller);
     }
     _table.updateColumns();
     _doAdd=!_doAdd;
@@ -88,7 +88,6 @@ public class MainTestGenericTables
     TableColumnController<DataItem,Long> idColumn=new TableColumnController<DataItem,Long>("ID",Long.class,idCell);
     idColumn.setWidthSpecs(100,100,100);
     table.addColumnController(idColumn);
-    _controllers.add(idColumn);
     // Name column
     for(int i=0;i<3;i++)
     {
@@ -102,7 +101,6 @@ public class MainTestGenericTables
       TableColumnController<DataItem,String> nameColumn=new TableColumnController<DataItem,String>("NOM",String.class,nameCell);
       nameColumn.setWidthSpecs(100,200,150);
       table.addColumnController(nameColumn);
-      _controllers.add(nameColumn);
     }
     // Sex column
     CellDataProvider<DataItem,SEX> sexCell=new CellDataProvider<DataItem,SEX>()
@@ -115,7 +113,6 @@ public class MainTestGenericTables
     TableColumnController<DataItem,SEX> sexColumn=new TableColumnController<DataItem,SEX>("SEX",SEX.class,sexCell);
     sexColumn.setWidthSpecs(100,200,150);
     table.addColumnController(sexColumn);
-    _controllers.add(sexColumn);
     return table;
   }
 
