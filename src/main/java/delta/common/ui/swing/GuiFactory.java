@@ -1,5 +1,6 @@
 package delta.common.ui.swing;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Insets;
@@ -16,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -329,6 +331,26 @@ public class GuiFactory
   }
 
   /**
+   * Get a new list.
+   * @return a new list.
+   */
+  public static <T> JList<T> buildList()
+  {
+    JList<T> list=new JList<T>();
+    if (USE_BACKGROUND_PATTERN)
+    {
+      list.setOpaque(false);
+      list.setBackground(new Color(0,true));
+    }
+    else
+    {
+      list.setBackground(BACKGROUND);
+      list.setOpaque(true);
+    }
+    return list;
+  }
+
+  /**
    * Get a new table.
    * @return a new table.
    */
@@ -374,7 +396,7 @@ public class GuiFactory
       viewport.setBackground(new Color(0,true));
       // Make header transparent (for tables)
       // - create a fake view so that the column header viewport gets created!
-      scrollPane.setColumnHeaderView(new JPanel());
+      scrollPane.setColumnHeaderView(GuiFactory.buildBackgroundPanel(new BorderLayout()));
       JViewport hviewport=scrollPane.getColumnHeader();
       hviewport.setOpaque(false);
       hviewport.setBackground(new Color(0,true));

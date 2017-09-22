@@ -1,6 +1,5 @@
 package delta.common.ui.swing.lists;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -39,18 +37,19 @@ public class OrderedItemsSelectionController<T> implements ActionListener
   private JButton _removeAll;
 
   /**
-     * Constructor.
-     * @param comparator Comparator to use (may be <code>null</code>).
-     */
-    public OrderedItemsSelectionController(Comparator<T> comparator) {
-        _sourceList = new ListController<T>(comparator);
-        _selectedList = new ListController<T>(null);
-    }
+   * Constructor.
+   * @param comparator Comparator to use (may be <code>null</code>).
+   */
+  public OrderedItemsSelectionController(Comparator<T> comparator)
+  {
+    _sourceList=new ListController<T>(comparator);
+    _selectedList=new ListController<T>(null);
+  }
 
-    /**
-     * Set the items to use.
-     * @param items The items to use.
-     */
+  /**
+   * Set the items to use.
+   * @param items The items to use.
+   */
   public void setItems(List<T> items)
   {
     _sourceList.setItems(items);
@@ -116,14 +115,16 @@ public class OrderedItemsSelectionController<T> implements ActionListener
       }
     };
     sourceList.addListSelectionListener(selectionListener);
-    JScrollPane sourceSP=new JScrollPane(sourceList);
+    JScrollPane sourceSP=GuiFactory.buildScrollPane(sourceList);
     Dimension d=new Dimension(300,200);
     sourceSP.setPreferredSize(d);
-    sourceSP.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(134,134,134)),"Selectable"));
+    TitledBorder selectableBorder=GuiFactory.buildTitledBorder("Selectable");
+    sourceSP.setBorder(selectableBorder);
     selectedList.addListSelectionListener(selectionListener);
-    JScrollPane selectedSP=new JScrollPane(selectedList);
+    JScrollPane selectedSP=GuiFactory.buildScrollPane(selectedList);
     selectedSP.setPreferredSize(d);
-    selectedSP.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(134,134,134)),"Selected"));
+    TitledBorder selectedBorder=GuiFactory.buildTitledBorder("Selected");
+    selectedSP.setBorder(selectedBorder);
 
     JPanel buttonsPanel=buildButtonsPanel();
     GridBagConstraints c=new GridBagConstraints(0,0,1,1,1.0,1.0,GridBagConstraints.CENTER,GridBagConstraints.BOTH,new Insets(5,5,5,5),0,0);
@@ -138,21 +139,21 @@ public class OrderedItemsSelectionController<T> implements ActionListener
 
   private JPanel buildButtonsPanel()
   {
-    JPanel buttonsPanel=new JPanel(new GridBagLayout());
+    JPanel buttonsPanel=GuiFactory.buildPanel(new GridBagLayout());
     GridBagConstraints c=new GridBagConstraints(0,0,1,1,1.0,1.0,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL,new Insets(5,5,5,5),0,0);
-    _add=new JButton(">");
+    _add=GuiFactory.buildButton(">");
     buttonsPanel.add(_add,c);
     c.gridy++;
     _add.addActionListener(this);
-    _addAll=new JButton(">>");
+    _addAll=GuiFactory.buildButton(">>");
     buttonsPanel.add(_addAll,c);
     c.gridy++;
     _addAll.addActionListener(this);
-    _remove=new JButton("<");
+    _remove=GuiFactory.buildButton("<");
     buttonsPanel.add(_remove,c);
     c.gridy++;
     _remove.addActionListener(this);
-    _removeAll=new JButton("<<");
+    _removeAll=GuiFactory.buildButton("<<");
     buttonsPanel.add(_removeAll,c);
     c.gridy++;
     _removeAll.addActionListener(this);

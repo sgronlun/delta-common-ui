@@ -9,6 +9,8 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
+import delta.common.ui.swing.GuiFactory;
+
 /**
  * List controller.
  * @param <T> Type of managed items.
@@ -34,7 +36,7 @@ public class ListController<T>
 
   private void buildList()
   {
-    _list=new JList<T>();
+    _list=GuiFactory.buildList();
     Dimension d=new Dimension(300,300);
     _list.setSize(d);
     _list.setMinimumSize(d);
