@@ -108,6 +108,134 @@ public class ListController<T>
   }
 
   /**
+   * Move the given item to top.
+   * @param item Targeted item.
+   */
+  public void moveItemTop(T item)
+  {
+    int previousIndex=_items.indexOf(item);
+    if (previousIndex!=0)
+    {
+      if (previousIndex!=-1)
+      {
+        _items.remove(previousIndex);
+        if (_model!=null)
+        {
+          _model.remove(previousIndex);
+        }
+      }
+      _items.add(0,item);
+      if (_model!=null)
+      {
+        _model.insertElementAt(item,0);
+      }
+    }
+  }
+
+  /**
+   * Move the given item up.
+   * @param item Targeted item.
+   */
+  public void moveItemUp(T item)
+  {
+    int previousIndex=_items.indexOf(item);
+    if (previousIndex!=0)
+    {
+      if (previousIndex!=-1)
+      {
+        _items.remove(previousIndex);
+        if (_model!=null)
+        {
+          _model.remove(previousIndex);
+        }
+      }
+      _items.add(previousIndex-1,item);
+      if (_model!=null)
+      {
+        _model.insertElementAt(item,previousIndex-1);
+      }
+    }
+  }
+
+  /**
+   * Move the given item down.
+   * @param item Targeted item.
+   */
+  public void moveItemDown(T item)
+  {
+    int nbItems=_items.size();
+    int previousIndex=_items.indexOf(item);
+    if (previousIndex!=nbItems-1)
+    {
+      if (previousIndex!=-1)
+      {
+        _items.remove(previousIndex);
+        if (_model!=null)
+        {
+          _model.remove(previousIndex);
+        }
+      }
+      _items.add(previousIndex+1,item);
+      if (_model!=null)
+      {
+        _model.insertElementAt(item,previousIndex+1);
+      }
+    }
+  }
+
+  /**
+   * Move the given item to bottom.
+   * @param item Targeted item.
+   */
+  public void moveItemBottom(T item)
+  {
+    int nbItems=_items.size();
+    int previousIndex=_items.indexOf(item);
+    if (previousIndex!=nbItems-1)
+    {
+      if (previousIndex!=-1)
+      {
+        _items.remove(previousIndex);
+        if (_model!=null)
+        {
+          _model.remove(previousIndex);
+        }
+      }
+      _items.add(item);
+      if (_model!=null)
+      {
+        _model.addElement(item);
+      }
+    }
+  }
+
+  /**
+   * Select the given item.
+   * @param item Item to select.
+   */
+  public void selectItem(T item)
+  {
+    int index=_items.indexOf(item);
+    _list.setSelectedIndex(index);
+  }
+
+  /**
+   * Select the given items.
+   * @param items Items to select.
+   */
+  public void selectItems(List<T> items)
+  {
+    int[] indexes=new int[items.size()];
+    int i=0;
+    for(T item : items)
+    {
+      indexes[i]=_items.indexOf(item);
+      i++;
+    }
+    _list.setSelectedIndices(indexes);
+  }
+
+  /**
    * Add an item.
    * The item is added at the end of the list, or sorted if a comparator is used.
    * @param item Item to add.

@@ -31,10 +31,17 @@ public class OrderedItemsSelectionController<T> implements ActionListener
   // UI
   private JPanel _panel;
 
+  // Select/de-select buttons
   private JButton _add;
   private JButton _addAll;
   private JButton _remove;
   private JButton _removeAll;
+
+  // Ordering buttons
+  private JButton _top;
+  private JButton _up;
+  private JButton _down;
+  private JButton _bottom;
 
   /**
    * Constructor.
@@ -126,18 +133,25 @@ public class OrderedItemsSelectionController<T> implements ActionListener
     TitledBorder selectedBorder=GuiFactory.buildTitledBorder("Selected");
     selectedSP.setBorder(selectedBorder);
 
-    JPanel buttonsPanel=buildButtonsPanel();
+    // Selectable items
     GridBagConstraints c=new GridBagConstraints(0,0,1,1,1.0,1.0,GridBagConstraints.CENTER,GridBagConstraints.BOTH,new Insets(5,5,5,5),0,0);
     panel.add(sourceSP,c);
+    // Selection buttons
     c=new GridBagConstraints(1,0,1,1,0.0,0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
+    JPanel buttonsPanel=buildMoveButtonsPanel();
     panel.add(buttonsPanel,c);
+    // Selected items
     c=new GridBagConstraints(2,0,1,1,1.0,1.0,GridBagConstraints.CENTER,GridBagConstraints.BOTH,new Insets(5,5,5,5),0,0);
     panel.add(selectedSP,c);
+    // Ordering buttons
+    c=new GridBagConstraints(3,0,1,1,0.0,0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE,new Insets(0,0,0,5),0,0);
+    JPanel orderingButtonsPanel=buildOrderingButtonsPanel();
+    panel.add(orderingButtonsPanel,c);
     updateButtonsStatus();
     return panel;
   }
 
-  private JPanel buildButtonsPanel()
+  private JPanel buildMoveButtonsPanel()
   {
     JPanel buttonsPanel=GuiFactory.buildPanel(new GridBagLayout());
     GridBagConstraints c=new GridBagConstraints(0,0,1,1,1.0,1.0,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL,new Insets(5,5,5,5),0,0);
@@ -157,6 +171,33 @@ public class OrderedItemsSelectionController<T> implements ActionListener
     buttonsPanel.add(_removeAll,c);
     c.gridy++;
     _removeAll.addActionListener(this);
+    return buttonsPanel;
+  }
+
+  private JPanel buildOrderingButtonsPanel()
+  {
+    JPanel buttonsPanel=GuiFactory.buildPanel(new GridBagLayout());
+    GridBagConstraints c=new GridBagConstraints(0,0,1,1,1.0,1.0,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL,new Insets(5,5,5,5),0,0);
+    // Top
+    _top=GuiFactory.buildButton("Top");
+    buttonsPanel.add(_top,c);
+    c.gridy++;
+    _top.addActionListener(this);
+    // Up
+    _up=GuiFactory.buildButton("Up");
+    buttonsPanel.add(_up,c);
+    c.gridy++;
+    _up.addActionListener(this);
+    // Down
+    _down=GuiFactory.buildButton("Down");
+    buttonsPanel.add(_down,c);
+    c.gridy++;
+    _down.addActionListener(this);
+    // Bottom
+    _bottom=GuiFactory.buildButton("Bottom");
+    buttonsPanel.add(_bottom,c);
+    c.gridy++;
+    _bottom.addActionListener(this);
     return buttonsPanel;
   }
 
@@ -199,6 +240,42 @@ public class OrderedItemsSelectionController<T> implements ActionListener
       }
       _selectedList.removeAll();
     }
+    else if (component==_top)
+    {
+      List<T> selectedItems=_selectedList.getSelectedItems();
+      int nbItems=selectedItems.size();
+      for(int i=nbItems-1;i>=0;i--)
+      {
+        T selectedItem=selectedItems.get(i);
+        _selectedList.moveItemTop(selectedItem);
+      }
+      _selectedList.selectItems(selectedItems);
+      _selectedList.getList().requestFocus();
+    }
+    else if (component==_up)
+    {
+      T selectedItem=_selectedList.getSelectedItems().get(0);
+      _selectedList.moveItemUp(selectedItem);
+      _selectedList.selectItem(selectedItem);
+      _selectedList.getList().requestFocus();
+    }
+    else if (component==_down)
+    {
+      T selectedItem=_selectedList.getSelectedItems().get(0);
+      _selectedList.moveItemDown(selectedItem);
+      _selectedList.selectItem(selectedItem);
+      _selectedList.getList().requestFocus();
+    }
+    else if (component==_bottom)
+    {
+      List<T> selectedItems=_selectedList.getSelectedItems();
+      for(T selectedItem : selectedItems)
+      {
+        _selectedList.moveItemBottom(selectedItem);
+      }
+      _selectedList.selectItems(selectedItems);
+      _selectedList.getList().requestFocus();
+    }
     updateButtonsStatus();
   }
 
@@ -224,6 +301,14 @@ public class OrderedItemsSelectionController<T> implements ActionListener
       List<T> selected=_selectedList.getItems();
       _removeAll.setEnabled(selected.size()>0);
     }
+    if (_top!=null)
+    {
+      List<T> selectedSelection=_selectedList.getSelectedItems();
+      _top.setEnabled(selectedSelection.size()>0);
+      _bottom.setEnabled(selectedSelection.size()>0);
+      _up.setEnabled(selectedSelection.size()==1);
+      _down.setEnabled(selectedSelection.size()==1);
+    }
   }
 
   /**
@@ -245,5 +330,9 @@ public class OrderedItemsSelectionController<T> implements ActionListener
     _addAll=null;
     _remove=null;
     _removeAll=null;
+    _top=null;
+    _up=null;
+    _down=null;
+    _bottom=null;
   }
 }
