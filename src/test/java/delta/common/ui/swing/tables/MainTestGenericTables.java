@@ -56,7 +56,7 @@ public class MainTestGenericTables
     if (_doAdd)
     {
       TableColumnController<DataItem,?> controller=mgr.getAvailableColumns().get(0);
-      mgr.addColumnController(controller);
+      mgr.addColumnController(controller,true);
     }
     else
     {

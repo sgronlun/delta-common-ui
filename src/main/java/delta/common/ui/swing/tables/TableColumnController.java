@@ -10,6 +10,7 @@ import javax.swing.table.TableCellRenderer;
  */
 public class TableColumnController<POJO,VALUE>
 {
+  private String _id;
   private int _minWidth;
   private int _maxWidth;
   private int _preferredWidth;
@@ -30,12 +31,34 @@ public class TableColumnController<POJO,VALUE>
    */
   public TableColumnController(String header, Class<VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
   {
+    this(header,header,dataType,valueProvider);
+  }
+
+  /**
+   * Constructor.
+   * @param id Identifier.
+   * @param header Header label.
+   * @param dataType Type of data in the column.
+   * @param valueProvider Provider for cell values.
+   */
+  public TableColumnController(String id, String header, Class<VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
+  {
+    _id=id;
     _header=header;
     _dataType=dataType;
     _sortable=true;
     _valueProvider=valueProvider;
     _renderer=null;
     _useToString=null;
+  }
+
+  /**
+   * Get the identifier for this column.
+   * @return the identifier for this column.
+   */
+  public String getId()
+  {
+    return _id;
   }
 
   /**

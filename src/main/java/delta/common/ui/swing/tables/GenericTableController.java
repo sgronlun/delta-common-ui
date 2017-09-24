@@ -246,7 +246,7 @@ public class GenericTableController<POJO>
    */
   public void addColumnController(TableColumnController<POJO,?> controller)
   {
-    _columns.addColumnController(controller);
+    _columns.addColumnController(controller,true);
   }
 
   /**
