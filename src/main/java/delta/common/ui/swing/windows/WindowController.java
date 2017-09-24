@@ -2,6 +2,8 @@ package delta.common.ui.swing.windows;
 
 import java.awt.Window;
 
+import delta.common.utils.misc.TypedProperties;
+
 /**
  * Interface of a window controller.
  * @author DAM
@@ -13,6 +15,12 @@ public interface WindowController
    * @return the managed window.
    */
   public Window getWindow();
+
+  /**
+   * Get the parent window controller, if any.
+   * @return A window controller or <code>null</code> if none or undefined.
+   */
+  public WindowController getParentController();
 
   /**
    * Compute a window identifier.
@@ -35,6 +43,13 @@ public interface WindowController
    * @param title Title to set.
    */
   public void setTitle(String title);
+
+  /**
+   * Get some user properties attached to the managed window.
+   * @param id Properties identifier.
+   * @return Some properties or <code>null</code>.
+   */
+  public TypedProperties getUserProperties(String id);
 
   /**
    * Release all managed resources.

@@ -15,6 +15,7 @@ import javax.swing.WindowConstants;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
+import delta.common.utils.misc.TypedProperties;
 
 /**
  * Default dialog controller.
@@ -172,6 +173,15 @@ public class DefaultDialogController implements WindowController
   {
     JDialog dialog=getDialog();
     dialog.setTitle(title);
+  }
+
+  public TypedProperties getUserProperties(String id)
+  {
+    if (_parent!=null)
+    {
+      return _parent.getUserProperties(id);
+    }
+    return null;
   }
 
   /**

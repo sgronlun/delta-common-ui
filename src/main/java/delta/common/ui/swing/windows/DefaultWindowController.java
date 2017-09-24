@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
+import delta.common.utils.misc.TypedProperties;
 
 /**
  * Default window controller.
@@ -138,6 +139,16 @@ public class DefaultWindowController implements WindowController
   {
     JFrame frame=getFrame();
     frame.setTitle(title);
+  }
+
+  public TypedProperties getUserProperties(String id)
+  {
+    return null;
+  }
+
+  public WindowController getParentController()
+  {
+    return null;
   }
 
   /**
