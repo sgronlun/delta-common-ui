@@ -1,5 +1,7 @@
 package delta.common.ui.swing.tables;
 
+import java.util.Comparator;
+
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -22,6 +24,8 @@ public class TableColumnController<POJO,VALUE>
   private TableCellRenderer _renderer;
   private Boolean _useToString;
   private boolean _editable;
+  private Comparator<VALUE> _comparator;
+  private TableCellRenderer _headerCellRenderer;
 
   /**
    * Constructor.
@@ -165,6 +169,24 @@ public class TableColumnController<POJO,VALUE>
   }
 
   /**
+   * Get the associated cell renderer, if any.
+   * @return A renderer or <code>null</code> to use defaults.
+   */
+  public TableCellRenderer getHeaderCellRenderer()
+  {
+    return _headerCellRenderer;
+  }
+
+  /**
+   * Set a specific header cell renderer.
+   * @param headerCellRenderer Renderer to set.
+   */
+  public void setHeaderCellRenderer(TableCellRenderer headerCellRenderer)
+  {
+    _headerCellRenderer=headerCellRenderer;
+  }
+
+  /**
    * Indicates if this column is editable or not.
    * @return <code>true</code> if it is, <code>false</code> otherwise.
    */
@@ -198,6 +220,24 @@ public class TableColumnController<POJO,VALUE>
   public void setUseToString(Boolean useToString)
   {
     _useToString=useToString;
+  }
+
+  /**
+   * Get the comparator to use for this column.
+   * @return A comparator or <code>null</code> if none.
+   */
+  public Comparator<VALUE> getComparator()
+  {
+    return _comparator;
+  }
+
+  /**
+   * Set the comparator to use for this column.
+   * @param comparator Comparator to set (may be <code>null</code>).
+   */
+  public void setComparator(Comparator<VALUE> comparator)
+  {
+    _comparator=comparator;
   }
 
   /**

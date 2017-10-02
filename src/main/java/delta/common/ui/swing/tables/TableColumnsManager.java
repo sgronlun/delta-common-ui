@@ -138,6 +138,17 @@ public class TableColumnsManager<POJO>
   }
 
   /**
+   * Remove a column.
+   * @param controller Controller to remove.
+   */
+  public void removeColumn(TableColumnController<POJO,?> controller)
+  {
+    _availableColumns.remove(controller);
+    _selectedColumns.remove(controller);
+    _columnsById.remove(controller.getId());
+  }
+
+  /**
    * Remove a column from the selected ones.
    * @param controller Controller to remove.
    */

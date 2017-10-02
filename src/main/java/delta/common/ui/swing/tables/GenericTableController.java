@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -193,6 +194,7 @@ public class GenericTableController<POJO>
     for(TableColumnController<POJO,?> controller : controllers)
     {
       TableColumn column=table.getColumnModel().getColumn(i);
+      // Size
       int preferredWidth=controller.getPreferredWidth();
       if (preferredWidth>=0)
       {
@@ -209,13 +211,29 @@ public class GenericTableController<POJO>
         column.setMaxWidth(maxWidth);
       }
       column.setResizable(true);
+      // Cell renderer
       TableCellRenderer renderer=controller.getCellRenderer();
       if (renderer!=null)
       {
         column.setCellRenderer(renderer);
       }
+      // Header cell renderer
+      TableCellRenderer headerRenderer=controller.getHeaderCellRenderer();
+      if (headerRenderer!=null)
+      {
+        column.setHeaderRenderer(headerRenderer);
+      }
+      // Sort
       boolean sortable=controller.isSortable();
       _sorter.setSortable(i,sortable);
+      if (sortable)
+      {
+        Comparator<?> comparator=controller.getComparator();
+        if (comparator!=null)
+        {
+          _sorter.setComparator(i,comparator);
+        }
+      }
       i++;
     }
   }
