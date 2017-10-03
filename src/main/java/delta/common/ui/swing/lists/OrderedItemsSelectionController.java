@@ -49,8 +49,18 @@ public class OrderedItemsSelectionController<T> implements ActionListener
    */
   public OrderedItemsSelectionController(Comparator<T> comparator)
   {
-    _sourceList=new ListController<T>(comparator);
-    _selectedList=new ListController<T>(null);
+    this(comparator,null);
+  }
+
+  /**
+   * Constructor.
+   * @param comparator Comparator to use (may be <code>null</code>).
+   * @param labelProvider Label provider, may be <code>null</code>.
+   */
+  public OrderedItemsSelectionController(Comparator<T> comparator,LabelProvider<T> labelProvider)
+  {
+    _sourceList=new ListController<T>(comparator,labelProvider);
+    _selectedList=new ListController<T>(null,labelProvider);
   }
 
   /**
@@ -111,8 +121,8 @@ public class OrderedItemsSelectionController<T> implements ActionListener
   {
     JPanel panel=GuiFactory.buildPanel(new GridBagLayout());
 
-    JList<T> sourceList=_sourceList.getList();
-    JList<T> selectedList=_selectedList.getList();
+    JList<?> sourceList=_sourceList.getList();
+    JList<?> selectedList=_selectedList.getList();
     ListSelectionListener selectionListener=new ListSelectionListener()
     {
       public void valueChanged(ListSelectionEvent e)

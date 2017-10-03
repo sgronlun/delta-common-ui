@@ -17,20 +17,31 @@ import delta.common.ui.swing.GuiFactory;
  */
 public class ListController<T>
 {
-  private JList<T> _list;
-  private DefaultListModel<T> _model;
+  private JList<ListItem<T>> _list;
+  private DefaultListModel<ListItem<T>> _model;
   private Comparator<T> _comparator;
   private List<T> _items;
+  private LabelProvider<T> _labelProvider;
 
   /**
    * Constructor.
-   * @param comparator Comparator to sort displayed items, may be
-   * <code>null</code>.
+   * @param comparator Comparator to sort displayed items, may be <code>null</code>.
    */
   public ListController(Comparator<T> comparator)
   {
+    this(comparator,null);
+  }
+
+  /**
+   * Constructor.
+   * @param comparator Comparator to sort displayed items, may be <code>null</code>.
+   * @param labelProvider Label provider, may be <code>null</code>.
+   */
+  public ListController(Comparator<T> comparator, LabelProvider<T> labelProvider)
+  {
     _comparator=comparator;
     _items=new ArrayList<T>();
+    _labelProvider=labelProvider;
     buildList();
   }
 
@@ -41,10 +52,10 @@ public class ListController<T>
     _list.setSize(d);
     _list.setMinimumSize(d);
 
-    _model=new DefaultListModel<T>();
-    for(T item:_items)
+    _model=new DefaultListModel<ListItem<T>>();
+    for(T item : _items)
     {
-      _model.addElement(item);
+      _model.addElement(new ListItem<T>(item,_labelProvider));
     }
     _list.setModel(_model);
   }
@@ -53,7 +64,7 @@ public class ListController<T>
    * Get the managed JList.
    * @return the managed JList.
    */
-  public JList<T> getList()
+  public JList<ListItem<T>> getList()
   {
     return _list;
   }
@@ -77,7 +88,7 @@ public class ListController<T>
     if (_list!=null)
     {
       int[] selection=_list.getSelectedIndices();
-      for(int index:selection)
+      for(int index : selection)
       {
         items.add(_items.get(index));
       }
@@ -100,9 +111,9 @@ public class ListController<T>
     if (_model!=null)
     {
       _model.clear();
-      for(T item:_items)
+      for(T item : _items)
       {
-        _model.addElement(item);
+        _model.addElement(new ListItem<T>(item,_labelProvider));
       }
     }
   }
@@ -127,7 +138,7 @@ public class ListController<T>
       _items.add(0,item);
       if (_model!=null)
       {
-        _model.insertElementAt(item,0);
+        _model.insertElementAt(new ListItem<T>(item,_labelProvider),0);
       }
     }
   }
@@ -152,7 +163,7 @@ public class ListController<T>
       _items.add(previousIndex-1,item);
       if (_model!=null)
       {
-        _model.insertElementAt(item,previousIndex-1);
+        _model.insertElementAt(new ListItem<T>(item,_labelProvider),previousIndex-1);
       }
     }
   }
@@ -178,7 +189,7 @@ public class ListController<T>
       _items.add(previousIndex+1,item);
       if (_model!=null)
       {
-        _model.insertElementAt(item,previousIndex+1);
+        _model.insertElementAt(new ListItem<T>(item,_labelProvider),previousIndex+1);
       }
     }
   }
@@ -204,7 +215,7 @@ public class ListController<T>
       _items.add(item);
       if (_model!=null)
       {
-        _model.addElement(item);
+        _model.addElement(new ListItem<T>(item,_labelProvider));
       }
     }
   }
@@ -249,14 +260,14 @@ public class ListController<T>
       if (_model!=null)
       {
         int index=_items.indexOf(item);
-        _model.add(index,item);
+        _model.add(index,new ListItem<T>(item,_labelProvider));
       }
     }
     else
     {
       if (_model!=null)
       {
-        _model.addElement(item);
+        _model.addElement(new ListItem<T>(item,_labelProvider));
       }
     }
   }
@@ -267,10 +278,14 @@ public class ListController<T>
    */
   public void removeItem(T t)
   {
-    _items.remove(t);
-    if (_model!=null)
+    int index=_items.indexOf(t);
+    if (index!=-1)
     {
-      _model.removeElement(t);
+      _items.remove(index);
+      if (_model!=null)
+      {
+        _model.remove(index);
+      }
     }
   }
 
@@ -280,7 +295,7 @@ public class ListController<T>
    */
   public void removeItems(List<T> items)
   {
-    for(T item:items)
+    for(T item : items)
     {
       removeItem(item);
     }
