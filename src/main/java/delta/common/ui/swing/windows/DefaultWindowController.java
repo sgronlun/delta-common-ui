@@ -5,9 +5,6 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Window;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -18,46 +15,29 @@ import javax.swing.WindowConstants;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
-import delta.common.utils.misc.TypedProperties;
 
 /**
  * Default window controller.
  * @author DAM
  */
-public class DefaultWindowController implements WindowController
+public class DefaultWindowController extends AbstractWindowController
 {
-  private JFrame _frame;
-  private WindowListener _listener;
-
   /**
    * Get the managed frame.
    * @return the managed frame.
    */
   public JFrame getFrame()
   {
-    if (_frame==null)
-    {
-      _frame=build();
-    }
-    return _frame;
+    return (JFrame)getWindow();
   }
 
   /**
-   * Get the managed window.
+   * Build the managed window.
    * @return the managed window.
    */
-  public Window getWindow()
+  protected Window buildWindow()
   {
-    return getFrame();
-  }
-
-  /**
-   * Compute a window identifier.
-   * @return A string that uniquely identifies the managed frame.
-   */
-  public String getWindowIdentifier()
-  {
-    return null;
+    return build();
   }
 
   protected JFrame build()
@@ -79,36 +59,12 @@ public class DefaultWindowController implements WindowController
       contentPane.add(component,BorderLayout.CENTER);
     }
     frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    WindowAdapter closeWindowAdapter=new WindowAdapter()
-    {
-      @Override
-      public void windowClosing(WindowEvent e)
-      {
-        doWindowClosing();
-      }
-    };
-    frame.addWindowListener(closeWindowAdapter);
-    _listener=closeWindowAdapter;
-
     return frame;
   }
 
   protected JMenuBar buildMenuBar()
   {
     return null;
-  }
-
-  protected JComponent buildContents()
-  {
-    return new JPanel();
-  }
-
-  /**
-   * Perform window closing.
-   */
-  protected void doWindowClosing()
-  {
-    dispose();
   }
 
   /**
@@ -141,32 +97,11 @@ public class DefaultWindowController implements WindowController
     frame.setTitle(title);
   }
 
-  public TypedProperties getUserProperties(String id)
-  {
-    return null;
-  }
-
-  public WindowController getParentController()
-  {
-    return null;
-  }
-
   /**
    * Release all managed resources.
    */
   public void dispose()
   {
-    if (_frame!=null)
-    {
-      if (_listener!=null)
-      {
-        _frame.removeWindowListener(_listener);
-      }
-      _frame.setVisible(false);
-      _frame.removeAll();
-      _frame.dispose();
-      _frame=null;
-    }
-    _listener=null;
+    super.dispose();
   }
 }
