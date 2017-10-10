@@ -94,21 +94,6 @@ public class GenericTableController<POJO>
   }
 
   /**
-   * Refresh an item in this table.
-   * @param row Row to refresh.
-   */
-  public void refreshRow(int row)
-  {
-    if (_table!=null)
-    {
-      if (row!=-1)
-      {
-        _model.fireTableRowsUpdated(row,row);
-      }
-    }
-  }
-
-  /**
    * Get the managed table.
    * @return the managed table.
    */
