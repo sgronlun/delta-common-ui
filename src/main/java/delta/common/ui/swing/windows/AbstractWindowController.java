@@ -1,5 +1,6 @@
 package delta.common.ui.swing.windows;
 
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -8,6 +9,8 @@ import java.awt.event.WindowListener;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import delta.common.ui.swing.GuiFactory;
+import delta.common.utils.misc.Preferences;
 import delta.common.utils.misc.TypedProperties;
 
 /**
@@ -133,6 +136,71 @@ public abstract class AbstractWindowController implements WindowController
     if (_window!=null)
     {
       _window.setVisible(false);
+    }
+  }
+
+  /**
+   * Perform automatic location setup using:
+   * <ul>
+   * <li>bounds preferences,
+   * <li>location relative to parent.
+   * </ul>
+   */
+  public void automaticLocationSetup()
+  {
+    Rectangle bounds=getBoundsPreferences();
+    if (bounds!=null)
+    {
+      _window.setBounds(bounds);
+    }
+    else
+    {
+      WindowController parentController=getParentController();
+      if (parentController!=null)
+      {
+        Window parentWindow=parentController.getWindow();
+        _window.setLocationRelativeTo(parentWindow);
+      }
+    }
+  }
+
+  /**
+   * Get the preferred bounds for this window.
+   * @return Some bounds or <code>null</code> if undefined.
+   */
+  public Rectangle getBoundsPreferences()
+  {
+    Rectangle bounds=null;
+    Preferences preferences=GuiFactory.getPreferences();
+    if (preferences!=null)
+    {
+      TypedProperties props=preferences.getPreferences("ui.windows");
+      String windowId=getWindowIdentifier();
+      String preferenceName=windowId+".bounds";
+      bounds=props.getBoundsProperty(preferenceName);
+    }
+    return bounds;
+  }
+
+  /**
+   * Save the preferred bounds for this window.
+   */
+  public void saveBoundsPreferences()
+  {
+    Preferences preferences=GuiFactory.getPreferences();
+    if (preferences!=null)
+    {
+      if (_window!=null)
+      {
+        String windowId=getWindowIdentifier();
+        if ((windowId!=null) && (windowId.length()>0))
+        {
+          TypedProperties props=preferences.getPreferences("ui.windows");
+          String preferenceName=windowId+".bounds";
+          Rectangle bounds=_window.getBounds();
+          props.setBoundsProperty(preferenceName,bounds);
+        }
+      }
     }
   }
 

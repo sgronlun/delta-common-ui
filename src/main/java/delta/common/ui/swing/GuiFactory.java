@@ -37,6 +37,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.JTableHeader;
 
 import delta.common.ui.swing.icons.IconsManager;
+import delta.common.utils.misc.Preferences;
 
 /**
  * Factory for GUI items.
@@ -48,6 +49,26 @@ public class GuiFactory
   private static Color FOREGROUND=Color.BLACK;
 
   private static boolean USE_BACKGROUND_PATTERN=true;
+
+  private static Preferences _preferences;
+
+  /**
+   * Get the UI preferences.
+   * @return the UI preferences.
+   */
+  public static Preferences getPreferences()
+  {
+    return _preferences;
+  }
+
+  /**
+   * Set the UI preferences.
+   * @param preferences Preferences to use.
+   */
+  public static void setPreferences(Preferences preferences)
+  {
+    _preferences=preferences;
+  }
 
   /**
    * Get the standard foreground color.
