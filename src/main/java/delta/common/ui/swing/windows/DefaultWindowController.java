@@ -23,6 +23,23 @@ import delta.common.ui.swing.icons.ApplicationIcons;
 public class DefaultWindowController extends AbstractWindowController
 {
   /**
+   * Constructor.
+   */
+  public DefaultWindowController()
+  {
+    super(null);
+  }
+
+  /**
+   * Constructor.
+   * @param parent Parent controller, if any.
+   */
+  public DefaultWindowController(WindowController parent)
+  {
+    super(parent);
+  }
+
+  /**
    * Get the managed frame.
    * @return the managed frame.
    */
@@ -95,13 +112,5 @@ public class DefaultWindowController extends AbstractWindowController
   {
     JFrame frame=getFrame();
     frame.setTitle(title);
-  }
-
-  /**
-   * Release all managed resources.
-   */
-  public void dispose()
-  {
-    super.dispose();
   }
 }

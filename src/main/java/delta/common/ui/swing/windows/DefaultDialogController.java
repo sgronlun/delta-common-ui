@@ -13,7 +13,6 @@ import javax.swing.WindowConstants;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
-import delta.common.utils.misc.TypedProperties;
 
 /**
  * Default dialog controller.
@@ -21,15 +20,13 @@ import delta.common.utils.misc.TypedProperties;
  */
 public class DefaultDialogController extends AbstractWindowController
 {
-  private WindowController _parent;
-
   /**
    * Constructor.
    * @param parent Parent controller.
    */
   public DefaultDialogController(WindowController parent)
   {
-    _parent=parent;
+    super(parent);
   }
 
   /**
@@ -50,22 +47,9 @@ public class DefaultDialogController extends AbstractWindowController
     return build();
   }
 
-  /**
-   * Get the parent controller.
-   * @return a controller or <code>null</code> if there's none.
-   */
-  public WindowController getParentController()
-  {
-    return _parent;
-  }
-
   protected JDialog build()
   {
-    Window parentWindow=null;
-    if (_parent!=null)
-    {
-      parentWindow=_parent.getWindow();
-    }
+    Window parentWindow=getParentWindow();
 
     JDialog dialog;
     if (parentWindow!=null)
@@ -124,23 +108,5 @@ public class DefaultDialogController extends AbstractWindowController
   {
     JDialog dialog=getDialog();
     dialog.setTitle(title);
-  }
-
-  public TypedProperties getUserProperties(String id)
-  {
-    if (_parent!=null)
-    {
-      return _parent.getUserProperties(id);
-    }
-    return null;
-  }
-
-  /**
-   * Release all managed resources.
-   */
-  public void dispose()
-  {
-    super.dispose();
-    _parent=null;
   }
 }

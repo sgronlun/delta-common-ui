@@ -16,8 +16,27 @@ import delta.common.utils.misc.TypedProperties;
  */
 public abstract class AbstractWindowController implements WindowController
 {
+  /**
+   * Parent controller, if any.
+   */
+  private WindowController _parent;
+  /**
+   * Managed window.
+   */
   private Window _window;
+  /**
+   * Listener for window close events.
+   */
   private WindowListener _closeWindowAdapter;
+
+  /**
+   * Constructor.
+   * @param parent Parent controller, if any.
+   */
+  public AbstractWindowController(WindowController parent)
+  {
+    _parent=parent;
+  }
 
   /**
    * Compute a window identifier.
@@ -61,13 +80,35 @@ public abstract class AbstractWindowController implements WindowController
     dispose();
   }
 
+  /**
+   * Get the parent controller.
+   * @return a controller or <code>null</code> if there's none.
+   */
   public WindowController getParentController()
   {
-    return null;
+    return _parent;
+  }
+
+  /**
+   * Get the parent window.
+   * @return A window or <code>null</code>.
+   */
+  public Window getParentWindow()
+  {
+    Window parentWindow=null;
+    if (_parent!=null)
+    {
+      parentWindow=_parent.getWindow();
+    }
+    return parentWindow;
   }
 
   public TypedProperties getUserProperties(String id)
   {
+    if (_parent!=null)
+    {
+      return _parent.getUserProperties(id);
+    }
     return null;
   }
 
@@ -112,5 +153,6 @@ public abstract class AbstractWindowController implements WindowController
       _window.dispose();
       _window=null;
     }
+    _parent=null;
   }
 }
