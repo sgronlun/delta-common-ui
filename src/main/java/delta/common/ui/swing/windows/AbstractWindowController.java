@@ -59,9 +59,19 @@ public abstract class AbstractWindowController implements WindowController
     if (_window==null)
     {
       _window=buildWindow();
+      configureWindow();
       setupWindowCloseListener();
     }
     return _window;
+  }
+
+  /**
+   * Override this method to configure the window
+   * just after it has been built!
+   */
+  public void configureWindow()
+  {
+    // Nothing!
   }
 
   /**
