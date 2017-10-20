@@ -96,7 +96,7 @@ public class ComboBoxController<T>
   public void removeAllItems()
   {
     _items.clear();
-    _comboBox.removeAll();
+    _comboBox.removeAllItems();
   }
 
   /**
