@@ -100,6 +100,20 @@ public class ComboBoxController<T>
   }
 
   /**
+   * Get the list of items in this combo-box.
+   * @return A possibly empty but not <code>null</code> list of items.
+   */
+  public List<T> getItems()
+  {
+    List<T> ret=new ArrayList<T>();
+    for(ComboBoxItem<T> item : _items)
+    {
+      ret.add(item.getItem());
+    }
+    return ret;
+  }
+
+  /**
    * Get the currently selected item.
    * @return A data item or <code>null</code> if nothing selected.
    */
