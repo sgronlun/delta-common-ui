@@ -69,7 +69,10 @@ public class IconWithText implements Icon
 
   public void paintIcon(Component c, Graphics g, int x, int y)
   {
-    _icon.paintIcon(c,g,x,y);
+    if (_icon!=null)
+    {
+      _icon.paintIcon(c,g,x,y);
+    }
 
     if (_text.length()>0)
     {
@@ -111,11 +114,11 @@ public class IconWithText implements Icon
 
   public int getIconWidth()
   {
-    return _icon.getIconWidth();
+    return (_icon!=null)?_icon.getIconWidth():0;
   }
 
   public int getIconHeight()
   {
-    return _icon.getIconHeight();
+    return (_icon!=null)?_icon.getIconHeight():0;
   }
 }
