@@ -1,10 +1,8 @@
 package delta.common.ui.swing.labels;
 
 import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URI;
 
 import javax.swing.JLabel;
 
@@ -18,34 +16,15 @@ public class HyperLinkController
 {
   private JLabel _label;
 
-  /**
-   * Hyperlink type.
-   * @author DAM
-   */
-  public enum TYPE
-  {
-    /**
-     * Mail-to.
-     */
-    MAILTO,
-    /**
-     * Browse.
-     */
-    BROWSE
-  }
-
-  private TYPE _type;
-  private String _text;
-  private String _subject;
+  private HyperLinkAction _action;
 
   /**
    * Constructor.
-   * @param type Hyperlink type.
+   * @param action Hyperlink action.
    */
-  public HyperLinkController(TYPE type)
+  public HyperLinkController(HyperLinkAction action)
   {
-    _type=type;
-    _subject="";
+    _action=action;
     _label=GuiFactory.buildLabel("");
     _label.setCursor(new Cursor(Cursor.HAND_CURSOR));
     _label.addMouseListener(new MouseAdapter()
@@ -56,7 +35,8 @@ public class HyperLinkController
         doIt();
       }
     });
-    setText("",null);
+    String linkText=action.getLinkText();
+    setText(linkText);
   }
 
   /**
@@ -68,66 +48,14 @@ public class HyperLinkController
     return _label;
   }
 
-  private void setText(String href, String linkText)
+  private void setText(String linkText)
   {
-    _text=href;
-    if (linkText==null)
-    {
-      linkText=href;
-    }
-    _label.setText("<html><a href=\""+href+"\">"+linkText+"</a></html>");
-  }
-
-  /**
-   * Set the URL to browse.
-   * @param url URL to browse.
-   * @param linkText Text of link (<code>null</code> to use URL).
-   */
-  public void setUrl(String url, String linkText)
-  {
-    setText(url,linkText);
-  }
-
-  /**
-   * Configure mail.
-   * @param address Address to write to.
-   * @param subject Subject of the draft mail.
-   */
-  public void configureMail(String address, String subject)
-  {
-    setText(address,null);
-    _subject=subject;
+    _label.setText("<html><a href=\"\">"+linkText+"</a></html>");
   }
 
   private void doIt()
   {
-    if (_type==TYPE.MAILTO)
-    {
-      try
-      {
-        String uri="mailto:"+_text;
-        if ((_subject!=null)&&(_subject.length()>0))
-        {
-          uri=uri+"?subject="+_subject;
-        }
-        Desktop.getDesktop().mail(new URI(uri));
-      }
-      catch (Exception ex)
-      {
-        // It looks like there's a problem
-      }
-    }
-    else if (_type==TYPE.BROWSE)
-    {
-      try
-      {
-        Desktop.getDesktop().browse(new URI(_text));
-      }
-      catch (Exception ex)
-      {
-        // It looks like there's a problem
-      }
-    }
+    _action.doClick(this);
   }
 
   /**
