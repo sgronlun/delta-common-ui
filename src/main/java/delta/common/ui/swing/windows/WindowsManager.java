@@ -4,8 +4,10 @@ import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Manages a set of windows.
@@ -76,6 +78,17 @@ public class WindowsManager
   {
     WindowController controller=_controllers.get(identifier);
     return controller;
+  }
+
+  /**
+   * Get a list of all managed window controllers.
+   * @return A possibly empty but not <code>null</code> list of controllers.
+   */
+  public List<WindowController> getAll()
+  {
+    List<WindowController> ret=new ArrayList<WindowController>();
+    ret.addAll(_controllers.values());
+    return ret;
   }
 
   /**
