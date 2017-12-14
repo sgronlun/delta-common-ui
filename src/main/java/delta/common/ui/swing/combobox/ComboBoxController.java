@@ -17,7 +17,7 @@ import delta.common.utils.NumericTools;
  */
 public class ComboBoxController<T>
 {
-  private JComboBox _comboBox;
+  private JComboBox<ComboBoxItem<T>> _comboBox;
   private List<ComboBoxItem<T>> _items;
   private List<ItemSelectionListener<T>> _listeners;
   private Class<T> _type;
@@ -48,7 +48,7 @@ public class ComboBoxController<T>
    * Get the managed combo-box.
    * @return the managed combo-box.
    */
-  public JComboBox getComboBox()
+  public JComboBox<ComboBoxItem<T>> getComboBox()
   {
     return _comboBox;
   }

@@ -343,9 +343,9 @@ public class GuiFactory
    * Get a new combo-box.
    * @return a new combo-box.
    */
-  public static JComboBox buildComboBox()
+  public static <T> JComboBox<T> buildComboBox()
   {
-    JComboBox cb=new JComboBox();
+    JComboBox<T> cb=new JComboBox<T>();
     cb.setBackground(BACKGROUND);
     cb.setForeground(FOREGROUND);
     return cb;

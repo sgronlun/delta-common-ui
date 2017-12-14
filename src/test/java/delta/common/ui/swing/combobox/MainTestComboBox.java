@@ -25,7 +25,7 @@ public class MainTestComboBox implements ItemSelectionListener<Integer>
     JFrame f=new JFrame();
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     JPanel panel=new JPanel(new BorderLayout());
-    JComboBox comboBox=_ctrl.getComboBox();
+    JComboBox<ComboBoxItem<Integer>> comboBox=_ctrl.getComboBox();
     panel.add(comboBox,BorderLayout.CENTER);
     f.getContentPane().add(panel);
     f.pack();
