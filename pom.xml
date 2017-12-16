@@ -4,7 +4,7 @@
   <artifactId>delta-common-ui</artifactId>
   <packaging>jar</packaging>
   <version>1.6</version>
-  <name>delta-common-ui</name>
+  <name>common-ui</name>
   <parent>
     <groupId>com.dam.delta4j</groupId>
     <artifactId>maven-definitions</artifactId>
