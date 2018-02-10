@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import delta.common.ui.swing.draw.HaloPainter;
 
@@ -39,7 +38,7 @@ public class IconWithText implements Icon
     TOP_LEFT
   }
 
-  private ImageIcon _icon;
+  private Icon _icon;
   private String _text;
   private Color _color;
   private Position _position;
@@ -50,7 +49,7 @@ public class IconWithText implements Icon
    * @param text Text to display.
    * @param color Color to use for text.
    */
-  public IconWithText(ImageIcon icon, String text, Color color)
+  public IconWithText(Icon icon, String text, Color color)
   {
     _icon=icon;
     _text=text;
