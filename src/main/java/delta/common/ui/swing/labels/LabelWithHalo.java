@@ -38,6 +38,17 @@ public class LabelWithHalo extends JLabel
   }
 
   @Override
+  public void setText(String text)
+  {
+    super.setText(text);
+    setPreferredSize(null);
+    Dimension d=getPreferredSize();
+    setSize(d);
+    setMinimumSize(d);
+    setPreferredSize(d);
+  }
+
+  @Override
   protected void paintComponent(Graphics g)
   {
     if (isOpaque())
