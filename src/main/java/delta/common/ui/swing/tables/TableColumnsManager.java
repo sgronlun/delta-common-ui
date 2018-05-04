@@ -13,6 +13,7 @@ public class TableColumnsManager<POJO>
 {
   // Available columns
   private List<TableColumnController<POJO,?>> _availableColumns;
+  // Column IDs
   private HashMap<String,TableColumnController<POJO,?>> _columnsById;
   // Selected columns
   private List<TableColumnController<POJO,?>> _selectedColumns;
@@ -78,6 +79,7 @@ public class TableColumnsManager<POJO>
     }
     return columnIds;
   }
+
   /**
    * Set the selected columns.
    * @param selectedColumns Selected columns.

@@ -11,10 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import delta.common.ui.swing.tables.CellDataProvider;
-import delta.common.ui.swing.tables.GenericTableController;
-import delta.common.ui.swing.tables.ListDataProvider;
-import delta.common.ui.swing.tables.TableColumnController;
 import delta.common.ui.swing.tables.DataItem.SEX;
 
 /**
@@ -85,7 +81,7 @@ public class MainTestGenericTables
         return Long.valueOf(item.getId());
       }
     };
-    TableColumnController<DataItem,Long> idColumn=new TableColumnController<DataItem,Long>("ID",Long.class,idCell);
+    DefaultTableColumnController<DataItem,Long> idColumn=new DefaultTableColumnController<DataItem,Long>("ID",Long.class,idCell);
     idColumn.setWidthSpecs(100,100,100);
     table.addColumnController(idColumn);
     // Name column
@@ -98,7 +94,7 @@ public class MainTestGenericTables
           return item.getName();
         }
       };
-      TableColumnController<DataItem,String> nameColumn=new TableColumnController<DataItem,String>("NOM",String.class,nameCell);
+      DefaultTableColumnController<DataItem,String> nameColumn=new DefaultTableColumnController<DataItem,String>("NOM",String.class,nameCell);
       nameColumn.setWidthSpecs(100,200,150);
       table.addColumnController(nameColumn);
     }
@@ -110,7 +106,7 @@ public class MainTestGenericTables
         return item.getSex();
       }
     };
-    TableColumnController<DataItem,SEX> sexColumn=new TableColumnController<DataItem,SEX>("SEX",SEX.class,sexCell);
+    DefaultTableColumnController<DataItem,SEX> sexColumn=new DefaultTableColumnController<DataItem,SEX>("SEX",SEX.class,sexCell);
     sexColumn.setWidthSpecs(100,200,150);
     table.addColumnController(sexColumn);
     return table;

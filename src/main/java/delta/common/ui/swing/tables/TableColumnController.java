@@ -10,284 +10,89 @@ import javax.swing.table.TableCellRenderer;
  * @param <VALUE> Value type of the managed column.
  * @author DAM
  */
-public class TableColumnController<POJO,VALUE>
+public interface TableColumnController<POJO,VALUE>
 {
-  private String _id;
-  private int _minWidth;
-  private int _maxWidth;
-  private int _preferredWidth;
-  private Class<VALUE> _dataType;
-  private String _header;
-  private boolean _sortable;
-  private CellDataProvider<POJO,VALUE> _valueProvider;
-  private CellDataUpdater<POJO> _valueUpdater;
-  private TableCellRenderer _renderer;
-  private Boolean _useToString;
-  private boolean _editable;
-  private Comparator<VALUE> _comparator;
-  private TableCellRenderer _headerCellRenderer;
-
-  /**
-   * Constructor.
-   * @param header Header label.
-   * @param dataType Type of data in the column.
-   * @param valueProvider Provider for cell values.
-   */
-  public TableColumnController(String header, Class<VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
-  {
-    this(header,header,dataType,valueProvider);
-  }
-
-  /**
-   * Constructor.
-   * @param id Identifier.
-   * @param header Header label.
-   * @param dataType Type of data in the column.
-   * @param valueProvider Provider for cell values.
-   */
-  public TableColumnController(String id, String header, Class<VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
-  {
-    _id=id;
-    _header=header;
-    _dataType=dataType;
-    _sortable=true;
-    _valueProvider=valueProvider;
-    _renderer=null;
-    _useToString=null;
-  }
-
   /**
    * Get the identifier for this column.
    * @return the identifier for this column.
    */
-  public String getId()
-  {
-    return _id;
-  }
+  String getId();
 
   /**
    * Get the minimum width for this column.
    * @return a value in pixels.
    */
-  public int getMinWidth()
-  {
-    return _minWidth;
-  }
-
-  /**
-   * Set the minimum width for this column.
-   * @param minWidth a width in pixels (-1 for no minimum).
-   */
-  public void setMinWidth(int minWidth)
-  {
-    _minWidth=minWidth;
-  }
+  int getMinWidth();
 
   /**
    * Get the maximum width for this column.
    * @return a value in pixels (-1 means no limit).
    */
-  public int getMaxWidth()
-  {
-    return _maxWidth;
-  }
-
-  /**
-   * Set the maximum width for this column.
-   * @param maxWidth a width in pixels (-1 for no limit).
-   */
-  public void setMaxWidth(int maxWidth)
-  {
-    _maxWidth=maxWidth;
-  }
+  int getMaxWidth();
 
   /**
    * Get the preferred width for this column.
    * @return a value in pixels.
    */
-  public int getPreferredWidth()
-  {
-    return _preferredWidth;
-  }
-
-  /**
-   * Set the preferred width for this column.
-   * @param preferredWidth a width in pixels.
-   */
-  public void setPreferredWidth(int preferredWidth)
-  {
-    _preferredWidth=preferredWidth;
-  }
-
-  /**
-   * Set width specifications.
-   * @param minWidth Minimum width in pixels.
-   * @param maxWidth Maximum width in pixels.
-   * @param preferredWidth Preferred width in pixels.
-   */
-  public void setWidthSpecs(int minWidth, int maxWidth, int preferredWidth)
-  {
-    _minWidth=minWidth;
-    _maxWidth=maxWidth;
-    _preferredWidth=preferredWidth;
-  }
+  int getPreferredWidth();
 
   /**
    * Indicates if this column is sortable or not.
    * @return <code>true</code> if it is, <code>false</code> otherwise.
    */
-  public boolean isSortable()
-  {
-    return _sortable;
-  }
-
-  /**
-   * Set the sortable flag.
-   * @param sortable Flag value to set.
-   */
-  public void setSortable(boolean sortable)
-  {
-    _sortable=sortable;
-  }
+  boolean isSortable();
 
   /**
    * Get the associated cell renderer, if any.
    * @return A renderer or <code>null</code> to use defaults.
    */
-  public TableCellRenderer getCellRenderer()
-  {
-    return _renderer;
-  }
-
-  /**
-   * Set a specific cell renderer.
-   * @param renderer Renderer to set.
-   */
-  public void setCellRenderer(TableCellRenderer renderer)
-  {
-    _renderer=renderer;
-  }
+  TableCellRenderer getCellRenderer();
 
   /**
    * Get the associated cell renderer, if any.
    * @return A renderer or <code>null</code> to use defaults.
    */
-  public TableCellRenderer getHeaderCellRenderer()
-  {
-    return _headerCellRenderer;
-  }
-
-  /**
-   * Set a specific header cell renderer.
-   * @param headerCellRenderer Renderer to set.
-   */
-  public void setHeaderCellRenderer(TableCellRenderer headerCellRenderer)
-  {
-    _headerCellRenderer=headerCellRenderer;
-  }
+  TableCellRenderer getHeaderCellRenderer();
 
   /**
    * Indicates if this column is editable or not.
    * @return <code>true</code> if it is, <code>false</code> otherwise.
    */
-  public boolean isEditable()
-  {
-    return _editable;
-  }
-
-  /**
-   * Set the 'editable' flag.
-   * @param editable <code>true</code> if it is, <code>false</code> otherwise.
-   */
-  public void setEditable(boolean editable)
-  {
-    _editable=editable;
-  }
+  boolean isEditable();
 
   /**
    * Indicates if the 'use to string' has been forced by the user.
    * @return A Boolean value or <code>null</code> to use defaults.
    */
-  public Boolean isUseToString()
-  {
-    return _useToString;
-  }
-
-  /**
-   * Set a specific value for 'use to string'.
-   * @param useToString Value to set.
-   */
-  public void setUseToString(Boolean useToString)
-  {
-    _useToString=useToString;
-  }
+  Boolean isUseToString();
 
   /**
    * Get the comparator to use for this column.
    * @return A comparator or <code>null</code> if none.
    */
-  public Comparator<VALUE> getComparator()
-  {
-    return _comparator;
-  }
-
-  /**
-   * Set the comparator to use for this column.
-   * @param comparator Comparator to set (may be <code>null</code>).
-   */
-  public void setComparator(Comparator<VALUE> comparator)
-  {
-    _comparator=comparator;
-  }
+  Comparator<VALUE> getComparator();
 
   /**
    * Get the type of data in the managed column.
    * @return a data type.
    */
-  public Class<VALUE> getDataType()
-  {
-    return _dataType;
-  }
+  Class<VALUE> getDataType();
 
   /**
    * Get the header label for this column.
    * @return a label.
    */
-  public String getHeader()
-  {
-    return _header;
-  }
+  String getHeader();
 
   /**
    * Get the cell value provider for this column.
    * @return a cell value provider.
    */
-  public CellDataProvider<POJO,VALUE> getValueProvider()
-  {
-    return _valueProvider;
-  }
+  CellDataProvider<POJO,VALUE> getValueProvider();
 
   /**
    * Get the cell value updater for this column.
    * @return a cell value updater.
    */
-  public CellDataUpdater<POJO> getValueUpdater()
-  {
-    return _valueUpdater;
-  }
-
-  /**
-   * Set the value updater.
-   * @param valueUpdater updater to set.
-   */
-  public void setValueUpdater(CellDataUpdater<POJO> valueUpdater)
-  {
-    _valueUpdater=valueUpdater;
-  }
-
-  @Override
-  public String toString()
-  {
-    return _header;
-  }
+  CellDataUpdater<POJO> getValueUpdater();
 }
