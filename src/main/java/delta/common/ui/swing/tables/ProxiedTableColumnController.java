@@ -136,4 +136,10 @@ public class ProxiedTableColumnController<SOURCE_POJO,POJO,VALUE> implements Tab
   {
     return _dataUpdater;
   }
+
+  @Override
+  public String toString()
+  {
+    return _controller.toString();
+  }
 }
