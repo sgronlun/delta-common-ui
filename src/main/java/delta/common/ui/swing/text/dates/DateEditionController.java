@@ -11,6 +11,8 @@ import javax.swing.JTextField;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.dnd.DNDTools;
 import delta.common.ui.swing.dnd.DropListener;
+import delta.common.ui.swing.menus.CommandExecutor;
+import delta.common.ui.swing.menus.PopupMenuController;
 import delta.common.ui.swing.text.DynamicTextEditionController;
 import delta.common.ui.swing.text.TextListener;
 
@@ -18,13 +20,16 @@ import delta.common.ui.swing.text.TextListener;
  * Controller for a date edition gadget.
  * @author DAM
  */
-public class DateEditionController implements DropListener<List<File>>, TextListener
+public class DateEditionController implements DropListener<List<File>>, TextListener, CommandExecutor
 {
+  private static final String NOW_COMMAND="NOW";
+
   private Long _date;
   private DateCodec _codec;
   private DynamicTextEditionController _textController;
   private JTextField _textField;
   private List<DateListener> _listeners;
+  private PopupMenuController _menu;
 
   /**
    * Constructor.
@@ -36,7 +41,43 @@ public class DateEditionController implements DropListener<List<File>>, TextList
     _codec=codec;
     _textField=GuiFactory.buildTextField("");
     _textField.setColumns(10);
+    String tooltip=buildTooltip();
+    _textField.setToolTipText(tooltip);
+    installMenu();
     DNDTools.installFilesDropListener(_textField,this);
+  }
+
+  private String buildTooltip()
+  {
+    StringBuilder sb=new StringBuilder();
+    sb.append("<html>");
+    sb.append("Use context menu to fill with the current date.");
+    sb.append("<br>");
+    sb.append("Drag&drop a file into this text field to fill it with the file date");
+    sb.append("</html>");
+    return sb.toString();
+  }
+
+  private void installMenu()
+  {
+    _menu=new PopupMenuController(this);
+    _menu.addMenuItem("Now...",NOW_COMMAND);
+    _menu.install(_textField);
+  }
+
+  @Override
+  public void invoke(String command)
+  {
+    if (NOW_COMMAND.equals(command))
+    {
+      doNow();
+    }
+  }
+
+  private void doNow()
+  {
+    long now=System.currentTimeMillis();
+    setDate(Long.valueOf(now));
   }
 
   /**
@@ -161,6 +202,11 @@ public class DateEditionController implements DropListener<List<File>>, TextList
     {
       _textController.dispose();
       _textController=null;
+    }
+    if (_menu!=null)
+    {
+      _menu.dispose();
+      _menu=null;
     }
     _textField=null;
     _listeners=null;
