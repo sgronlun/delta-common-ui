@@ -4,7 +4,8 @@ import java.awt.Desktop;
 import java.net.URI;
 
 /**
- * @author dm
+ * Hyperlink action to send a mail.
+ * @author DAM
  */
 public class MailToHyperlinkAction implements HyperLinkAction
 {

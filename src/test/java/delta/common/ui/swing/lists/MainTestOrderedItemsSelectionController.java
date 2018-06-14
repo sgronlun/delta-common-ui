@@ -9,7 +9,7 @@ import delta.common.ui.swing.windows.DefaultFormDialogController;
 
 /**
  * Simple test class for the ordered items selection controller.
- * @author dm
+ * @author DAM
  */
 public class MainTestOrderedItemsSelectionController
 {
