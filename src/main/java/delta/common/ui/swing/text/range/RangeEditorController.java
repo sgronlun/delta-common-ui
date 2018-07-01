@@ -18,8 +18,24 @@ import delta.common.utils.ListenersManager;
  */
 public class RangeEditorController
 {
+  /**
+   * Disposition of gadgets.
+   * @author DAM
+   */
+  public enum Disposition
+  {
+    /**
+     * Horizontal.
+     */
+    HORIZONTAL,
+    /**
+     * Vertical.
+     */
+    VERTICAL
+  }
   // Data
   private ListenersManager<RangeListener> _listeners;
+  private Disposition _disposition;
   // GUI
   private JPanel _panel;
   private ComboBoxController<Integer> _minValue;
@@ -30,6 +46,7 @@ public class RangeEditorController
    */
   public RangeEditorController()
   {
+    _disposition=Disposition.HORIZONTAL;
     _listeners=new ListenersManager<RangeListener>();
   }
 
@@ -113,13 +130,20 @@ public class RangeEditorController
     // Build panel
     JPanel panel=GuiFactory.buildPanel(new GridBagLayout());
     {
-      GridBagConstraints c=new GridBagConstraints(0,0,1,1,0,0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
+      GridBagConstraints c=new GridBagConstraints(0,0,1,1,0,0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(2,2,2,2),0,0);
       panel.add(GuiFactory.buildLabel("Min:"),c);
       c.gridx=1;
       panel.add(_minValue.getComboBox(),c);
-      c.gridy=1;c.gridx=0;
+      if (_disposition==Disposition.VERTICAL)
+      {
+        c.gridy=1;c.gridx=0;
+      }
+      else
+      {
+        c.gridx++;
+      }
       panel.add(GuiFactory.buildLabel("Max:"),c);
-      c.gridx=1;
+      c.gridx++;
       panel.add(_maxValue.getComboBox(),c);
       ItemSelectionListener<Integer> listenerMinDates=new ItemSelectionListener<Integer>()
       {
