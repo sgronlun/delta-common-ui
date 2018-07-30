@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class ListDataProvider<POJO> implements DataProvider<POJO>
 {
-  private List<POJO> _list;
+  private List<? extends POJO> _list;
 
   /**
    * Constructor.
    * @param list Wrapped list.
    */
-  public ListDataProvider(List<POJO> list)
+  public ListDataProvider(List<? extends POJO> list)
   {
     _list=list;
   }
