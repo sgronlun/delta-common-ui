@@ -32,8 +32,12 @@ public class ProxiedTableColumnController<SOURCE_POJO,POJO,VALUE> implements Tab
       public VALUE getData(SOURCE_POJO p)
       {
         POJO pojo=proxiedProvider.getData(p);
-        CellDataProvider<POJO,VALUE> innerProvider=_controller.getValueProvider();
-        VALUE value=innerProvider.getData(pojo);
+        VALUE value=null;
+        if (pojo!=null)
+        {
+          CellDataProvider<POJO,VALUE> innerProvider=_controller.getValueProvider();
+          value=innerProvider.getData(pojo);
+        } 
         return value;
       }
     };
