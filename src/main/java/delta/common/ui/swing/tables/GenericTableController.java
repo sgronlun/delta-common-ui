@@ -13,10 +13,13 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import delta.common.ui.swing.GuiFactory;
@@ -36,6 +39,7 @@ public class GenericTableController<POJO>
   // Data
   private DataProvider<POJO> _dataProvider;
   private Filter<POJO> _filter;
+  private Sort _sort;
   // Columns
   private TableColumnsManager<POJO> _columns;
   // GUI
@@ -102,6 +106,7 @@ public class GenericTableController<POJO>
     if (_table==null)
     {
       _table=build();
+      applySort(_sort);
     }
     return _table;
   }
@@ -392,6 +397,41 @@ public class GenericTableController<POJO>
       }
     }
     return index;
+  }
+
+  /**
+   * Set sort.
+   * @param sort Sort specification.
+   */
+  public void setSort(Sort sort)
+  {
+    _sort=sort;
+    if (_table!=null)
+    {
+      applySort(_sort);
+    }
+  }
+
+  private void applySort(Sort sort)
+  {
+    if (sort!=null)
+    {
+      RowSorter<? extends TableModel> sorter=_table.getRowSorter();
+      List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+      int nbItems=sort.getNumberOfItems();
+      for(int i=0;i<nbItems;i++)
+      {
+        String id=sort.getColumnId(i);
+        boolean ascending=sort.isAscending(i);
+        Integer columnIndex=_columns.getColumnIndex(id);
+        if (columnIndex!=null)
+        {
+          SortOrder order=ascending?SortOrder.ASCENDING:SortOrder.DESCENDING;
+          sortKeys.add(new RowSorter.SortKey(columnIndex.intValue(), order));
+        }
+      }
+      sorter.setSortKeys(sortKeys);
+    }
   }
 
   /**

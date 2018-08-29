@@ -58,6 +58,25 @@ public class TableColumnsManager<POJO>
   }
 
   /**
+   * Get the index of the targeted column.
+   * @param id Identifier of the targeted column.
+   * @return An index (starting at 0), or <code>null</code> if not found.
+   */
+  public Integer getColumnIndex(String id)
+  {
+    int index=0;
+    for(TableColumnController<POJO,?> column : _selectedColumns)
+    {
+      if (id.equals(column.getId()))
+      {
+        return Integer.valueOf(index);
+      }
+      index++;
+    }
+    return null;
+  }
+
+  /**
    * Get the selected columns.
    * @return the selected columns.
    */
