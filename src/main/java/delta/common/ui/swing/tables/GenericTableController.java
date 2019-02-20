@@ -332,13 +332,22 @@ public class GenericTableController<POJO>
   }
 
   /**
-   * Get the number of filtered items in the managed log.
+   * Get the number of filtered items in the managed table.
    * @return A number of items.
    */
   public int getNbFilteredItems()
   {
     int ret=_table.getRowSorter().getViewRowCount();
     return ret;
+  }
+
+  /**
+   * Get the number of items in the managed table.
+   * @return A number of items.
+   */
+  public int getNbItems()
+  {
+    return _dataProvider.getCount();
   }
 
   /**
@@ -417,7 +426,7 @@ public class GenericTableController<POJO>
     if (sort!=null)
     {
       RowSorter<? extends TableModel> sorter=_table.getRowSorter();
-      List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+      List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
       int nbItems=sort.getNumberOfItems();
       for(int i=0;i<nbItems;i++)
       {

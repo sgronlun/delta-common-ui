@@ -110,7 +110,7 @@ public class TableColumnsManager<POJO>
   }
 
   /**
-   * Select the colummns to display.
+   * Select the columns to display.
    * @param ids Identifiers of the columns to display.
    */
   public void setColumns(List<String> ids)
