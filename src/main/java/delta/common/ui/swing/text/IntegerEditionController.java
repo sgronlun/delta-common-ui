@@ -8,12 +8,8 @@ import delta.common.utils.NumericTools;
  * Integer edition controller using a text field.
  * @author DAM
  */
-public class IntegerEditionController
+public class IntegerEditionController extends NumberEditionController<Integer>
 {
-  private JTextField _textField;
-  private Integer _minValue;
-  private Integer _maxValue;
-
   /**
    * Constructor.
    * @param textField Managed text field.
@@ -30,50 +26,7 @@ public class IntegerEditionController
    */
   public IntegerEditionController(JTextField textField, int columns)
   {
-    _textField=textField;
-    _minValue=null;
-    _maxValue=null;
-    _textField.setColumns(columns);
-  }
-
-  /**
-   * Set the graphical state of the managed gadget.
-   * @param enabled Enabled or not.
-   * @param editable Editable or not.
-   */
-  public void setState(boolean enabled, boolean editable)
-  {
-    _textField.setEnabled(enabled);
-    _textField.setEditable(editable);
-  }
-
-  /**
-   * Set the allowed value range.
-   * @param minValue Minimum value, if any.
-   * @param maxValue Maximum value, if any.
-   */
-  public void setValueRange(Integer minValue, Integer maxValue)
-  {
-    _minValue=minValue;
-    _maxValue=maxValue;
-    configureTextField();
-  }
-
-  /**
-   * Get the managed text field.
-   * @return the managed text field.
-   */
-  public JTextField getTextField()
-  {
-    return _textField;
-  }
-
-  /**
-   * Configure the text field.
-   */
-  private void configureTextField()
-  {
-    // TODO add Document model to check for typed chars
+    super(textField,columns);
   }
 
   /**
@@ -98,8 +51,13 @@ public class IntegerEditionController
    */
   public Integer getValue()
   {
+    return _currentValue;
+  }
+
+  @Override
+  protected Integer parseValue(String text)
+  {
     Integer ret=null;
-    String text=_textField.getText();
     Integer value=NumericTools.parseInteger(text);
     if (value!=null)
     {
@@ -129,8 +87,6 @@ public class IntegerEditionController
    */
   public void dispose()
   {
-    _textField=null;
-    _minValue=null;
-    _maxValue=null;
+    super.dispose();
   }
 }

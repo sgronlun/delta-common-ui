@@ -8,51 +8,15 @@ import delta.common.utils.NumericTools;
  * Float edition controller using a text field.
  * @author DAM
  */
-public class FloatEditionController
+public class FloatEditionController extends NumberEditionController<Float>
 {
-  private JTextField _textField;
-  private Float _minValue;
-  private Float _maxValue;
-
   /**
    * Constructor.
    * @param textField Managed text field.
    */
   public FloatEditionController(JTextField textField)
   {
-    _textField=textField;
-    _minValue=null;
-    _maxValue=null;
-    _textField.setColumns(5);
-  }
-
-  /**
-   * Set the allowed value range.
-   * @param minValue Minimum value, if any.
-   * @param maxValue Maximum value, if any.
-   */
-  public void setValueRange(Float minValue, Float maxValue)
-  {
-    _minValue=minValue;
-    _maxValue=maxValue;
-    configureTextField();
-  }
-
-  /**
-   * Get the managed text field.
-   * @return the managed text field.
-   */
-  public JTextField getTextField()
-  {
-    return _textField;
-  }
-
-  /**
-   * Configure the text field.
-   */
-  private void configureTextField()
-  {
-    // TODO add Document model to check for typed chars
+    super(textField,5);
   }
 
   /**
@@ -71,14 +35,10 @@ public class FloatEditionController
     }
   }
 
-  /**
-   * Get the edited value.
-   * @return A value or <code>null</code> if not valid.
-   */
-  public Float getValue()
+  @Override
+  protected Float parseValue(String text)
   {
     Float ret=null;
-    String text=_textField.getText();
     Float value=NumericTools.parseFloat(text);
     if (value!=null)
     {
@@ -108,8 +68,6 @@ public class FloatEditionController
    */
   public void dispose()
   {
-    _textField=null;
-    _minValue=null;
-    _maxValue=null;
+    super.dispose();
   }
 }
