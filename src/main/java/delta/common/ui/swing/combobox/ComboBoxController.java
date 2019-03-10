@@ -40,7 +40,15 @@ public class ComboBoxController<T>
     _comboBox=GuiFactory.buildComboBox();
     _comboBox.setEditable(editable);
     _items=new ArrayList<ComboBoxItem<T>>();
-    _listeners=null;
+    _listeners=new ArrayList<ItemSelectionListener<T>>();
+    ActionListener al=new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        callListeners();
+      }
+    };
+    _comboBox.addActionListener(al);
     _type=type;
   }
 
@@ -190,18 +198,6 @@ public class ComboBoxController<T>
    */
   public void addListener(ItemSelectionListener<T> listener)
   {
-    if (_listeners==null)
-    {
-      _listeners=new ArrayList<ItemSelectionListener<T>>();
-      ActionListener al=new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-          callListeners();
-        }
-      };
-      _comboBox.addActionListener(al);
-    }
     _listeners.add(listener);
   }
 
@@ -216,10 +212,13 @@ public class ComboBoxController<T>
 
   private void callListeners()
   {
-    T item=getSelectedItem();
-    for(ItemSelectionListener<T> listener : _listeners)
+    if (_listeners!=null)
     {
-      listener.itemSelected(item);
+      T item=getSelectedItem();
+      for(ItemSelectionListener<T> listener : _listeners)
+      {
+        listener.itemSelected(item);
+      }
     }
   }
 
@@ -228,6 +227,9 @@ public class ComboBoxController<T>
    */
   public void dispose()
   {
+    _comboBox=null;
+    _items=null;
     _listeners=null;
+    _type=null;
   }
 }
