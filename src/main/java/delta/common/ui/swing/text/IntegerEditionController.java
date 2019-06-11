@@ -1,5 +1,7 @@
 package delta.common.ui.swing.text;
 
+import java.util.Objects;
+
 import javax.swing.JTextField;
 
 import delta.common.utils.NumericTools;
@@ -41,7 +43,10 @@ public class IntegerEditionController extends NumberEditionController<Integer>
     }
     else
     {
-      _textField.setText(String.valueOf(value.intValue()));
+      if (!Objects.equals(_currentValue,value))
+      {
+        _textField.setText(String.valueOf(value.intValue()));
+      }
     }
   }
 
