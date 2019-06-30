@@ -29,6 +29,7 @@ public abstract class NumberEditionController<T extends Number> extends Abstract
     _minValue=null;
     _maxValue=null;
     _textField.setColumns(columns);
+    _textField.setHorizontalAlignment(JTextField.TRAILING);
     _listeners=new ArrayList<NumberListener<T>>();
   }
 
