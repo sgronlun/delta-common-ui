@@ -417,7 +417,7 @@ public class GuiFactory
       viewport.setBackground(new Color(0,true));
       // Make header transparent (for tables)
       // - create a fake view so that the column header viewport gets created!
-      scrollPane.setColumnHeaderView(GuiFactory.buildBackgroundPanel(new BorderLayout()));
+      scrollPane.setColumnHeaderView(GuiFactory.buildPanel(new BorderLayout()));
       JViewport hviewport=scrollPane.getColumnHeader();
       hviewport.setOpaque(false);
       hviewport.setBackground(new Color(0,true));
