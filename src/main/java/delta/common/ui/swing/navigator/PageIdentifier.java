@@ -92,7 +92,7 @@ public class PageIdentifier
   {
     StringBuilder sb=new StringBuilder();
     sb.append(_baseAddress);
-    boolean isFirst=false;
+    boolean isFirst=true;
     for(Map.Entry<String,String> entry : _parameters.entrySet())
     {
       sb.append(isFirst?':':'&');
@@ -156,7 +156,7 @@ public class PageIdentifier
     sb.append("Page: address=").append(_baseAddress);
     if (_parameters.size()>0)
     {
-      sb.append(", parameters: ").append(_parameters);
+      sb.append(", parameters=").append(_parameters);
     }
     return sb.toString();
   }
