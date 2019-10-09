@@ -16,6 +16,8 @@ import delta.common.ui.swing.GuiFactory;
  */
 public class MultilineLabel2 extends JPanel
 {
+  private Float _size;
+
   /**
    * Constructor.
    */
@@ -23,6 +25,16 @@ public class MultilineLabel2 extends JPanel
   {
     setOpaque(false);
     setLayout(new GridBagLayout());
+  }
+
+  /**
+   * Constructor.
+   * @param size Font size.
+   */
+  public MultilineLabel2(float size)
+  {
+    this();
+    _size=Float.valueOf(size);
   }
 
   /**
@@ -46,7 +58,7 @@ public class MultilineLabel2 extends JPanel
     int nbLines=text.length;
     for(int i=0;i<nbLines;i++)
     {
-      JLabel label=GuiFactory.buildLabel(text[i]);
+      JLabel label=_size!=null?GuiFactory.buildLabel(text[i],_size.floatValue()):GuiFactory.buildLabel(text[i]);
       GridBagConstraints c=new GridBagConstraints(0,i,1,1,1.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
       add(label,c);
     }
