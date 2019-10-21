@@ -64,6 +64,7 @@ public class DefaultWindowController extends AbstractWindowController
     frame.setContentPane(backgroundPanel);
     List<Image> icons=ApplicationIcons.getApplicationIcons();
     frame.setIconImages(icons);
+    _window=frame;
     JMenuBar menuBar=buildMenuBar();
     if (menuBar!=null)
     {

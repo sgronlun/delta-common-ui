@@ -60,6 +60,7 @@ public class DefaultDialogController extends AbstractWindowController
     {
       dialog=new JDialog();
     }
+    _window=dialog;
     JPanel backgroundPanel=GuiFactory.buildBackgroundPanel(new BorderLayout());
     dialog.setContentPane(backgroundPanel);
     List<Image> icons=ApplicationIcons.getApplicationIcons();

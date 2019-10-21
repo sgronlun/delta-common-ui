@@ -26,7 +26,7 @@ public abstract class AbstractWindowController implements WindowController
   /**
    * Managed window.
    */
-  private Window _window;
+  protected Window _window;
   /**
    * Listener for window close events.
    */
@@ -62,6 +62,15 @@ public abstract class AbstractWindowController implements WindowController
       configureWindow();
       setupWindowCloseListener();
     }
+    return _window;
+  }
+
+  /**
+   * Get the window.
+   * @return a window or <code>null</code> if not built.
+   */
+  protected Window getUnsafeWindow()
+  {
     return _window;
   }
 

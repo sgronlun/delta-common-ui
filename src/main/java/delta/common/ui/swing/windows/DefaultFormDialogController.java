@@ -29,6 +29,8 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
   protected T _data;
   // Controllers
   private OKCancelPanelController _okCancelController;
+  // Listeners
+  private ActionListener _actionListener;
 
   /**
    * Constructor.
@@ -65,7 +67,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
     _okCancelController=new OKCancelPanelController();
     JPanel okCancelPanel=_okCancelController.getPanel();
     panel.add(okCancelPanel,BorderLayout.SOUTH);
-    ActionListener al=new ActionListener()
+    _actionListener=new ActionListener()
     {
       public void actionPerformed(ActionEvent event)
       {
@@ -73,8 +75,8 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
         handleButton(action);
       }
     };
-    _okCancelController.getOKButton().addActionListener(al);
-    _okCancelController.getCancelButton().addActionListener(al);
+    _okCancelController.getOKButton().addActionListener(_actionListener);
+    _okCancelController.getCancelButton().addActionListener(_actionListener);
     return panel;
   }
 
@@ -109,6 +111,30 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
         }
       };
       rootPane.getActionMap().put(OKCancelPanelController.CANCEL_COMMAND, action);
+    }
+  }
+
+  private void removeShortcuts()
+  {
+    JDialog dialog=(JDialog)getUnsafeWindow();
+    if (dialog!=null)
+    {
+      // OK
+      {
+        KeyStroke stroke=KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+        JRootPane rootPane=dialog.getRootPane();
+        InputMap inputMap=rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.remove(stroke);
+        rootPane.getActionMap().remove(OKCancelPanelController.OK_COMMAND);
+      }
+      // Cancel
+      {
+        KeyStroke stroke=KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        JRootPane rootPane=dialog.getRootPane();
+        InputMap inputMap=rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.remove(stroke);
+        rootPane.getActionMap().remove(OKCancelPanelController.CANCEL_COMMAND);
+      }
     }
   }
 
@@ -186,11 +212,20 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
   @Override
   public void dispose()
   {
-    super.dispose();
+    // Remove shortcuts
+    removeShortcuts();
     if (_okCancelController!=null)
     {
+      // Remove listener
+      if (_actionListener!=null)
+      {
+        _okCancelController.getOKButton().removeActionListener(_actionListener);
+        _okCancelController.getCancelButton().removeActionListener(_actionListener);
+        _actionListener=null;
+      }
       _okCancelController.dispose();
       _okCancelController=null;
     }
+    super.dispose();
   }
 }
