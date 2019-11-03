@@ -39,6 +39,11 @@ public interface WindowController
   public void bringToFront();
 
   /**
+   * Pack contents to preferred size.
+   */
+  public void pack();
+
+  /**
    * Set window title.
    * @param title Title to set.
    */
