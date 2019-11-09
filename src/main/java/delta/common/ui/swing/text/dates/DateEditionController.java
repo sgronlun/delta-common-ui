@@ -133,7 +133,7 @@ public class DateEditionController implements DropListener<List<File>>, TextList
 
   public void textChanged(String newText)
   {
-    Long newDate=getDate();
+    Long newDate=parseDate();
     boolean dateChanged=!Objects.equals(_date,newDate);
     if (dateChanged)
     {
@@ -169,11 +169,20 @@ public class DateEditionController implements DropListener<List<File>>, TextList
    * Get the current date value.
    * @return A date value or <code>null</code> if invalid.
    */
-  public Long getDate()
+  private Long parseDate()
   {
     String dateStr=getRawDate();
     Long date=_codec.parseDate(dateStr);
     return date;
+  }
+
+  /**
+   * Get the current date value.
+   * @return A date value or <code>null</code> if invalid.
+   */
+  public Long getDate()
+  {
+    return _date;
   }
 
   /**
@@ -186,9 +195,8 @@ public class DateEditionController implements DropListener<List<File>>, TextList
     if (!Objects.equals(dateStr,_textField.getText()))
     {
       _textField.setText(dateStr);
-      // Rely on the text listener to update the date
-      //_date=date;
     }
+    _date=date;
   }
 
   /**
