@@ -93,8 +93,8 @@ public class ComboBoxController<T>
     ComboBoxItem<T> item=getItemForData(data);
     if (item!=null)
     {
-      _items.remove(item);
       _comboBox.removeItem(item);
+      _items.remove(item);
     }
   }
 
