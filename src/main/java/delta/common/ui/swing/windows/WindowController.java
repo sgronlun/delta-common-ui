@@ -57,6 +57,12 @@ public interface WindowController
   public TypedProperties getUserProperties(String id);
 
   /**
+   * Get the child windows manager.
+   * @return the child windows manager.
+   */
+  public WindowsManager getWindowsManager();
+
+  /**
    * Release all managed resources.
    */
   public void dispose();

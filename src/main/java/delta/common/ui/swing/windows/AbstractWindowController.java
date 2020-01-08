@@ -31,6 +31,10 @@ public abstract class AbstractWindowController implements WindowController
    * Listener for window close events.
    */
   private WindowListener _closeWindowAdapter;
+  /**
+   * Child windows manager.
+   */
+  private WindowsManager _windowsManager;
 
   /**
    * Constructor.
@@ -39,6 +43,7 @@ public abstract class AbstractWindowController implements WindowController
   public AbstractWindowController(WindowController parent)
   {
     _parent=parent;
+    _windowsManager=new WindowsManager();
   }
 
   /**
@@ -234,6 +239,12 @@ public abstract class AbstractWindowController implements WindowController
     }
   }
 
+  @Override
+  public WindowsManager getWindowsManager()
+  {
+    return _windowsManager;
+  }
+
   /**
    * Release all managed resources.
    */
@@ -250,6 +261,11 @@ public abstract class AbstractWindowController implements WindowController
       _window.removeAll();
       _window.dispose();
       _window=null;
+    }
+    if (_windowsManager!=null)
+    {
+      _windowsManager.dispose();
+      _windowsManager=null;
     }
     _parent=null;
   }

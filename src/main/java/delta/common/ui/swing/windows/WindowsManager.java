@@ -103,4 +103,13 @@ public class WindowsManager
       controller.dispose();
     }
   }
+
+  /**
+   * Release all managed resources.
+   */
+  public void dispose()
+  {
+    disposeAll();
+    _controllers.clear();
+  }
 }
