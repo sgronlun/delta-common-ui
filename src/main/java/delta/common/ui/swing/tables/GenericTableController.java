@@ -36,6 +36,10 @@ public class GenericTableController<POJO>
    * Double-click action command.
    */
   public static final String DOUBLE_CLICK="double click";
+  /**
+   * Click action command.
+   */
+  public static final String CLICK="click";
   // Data
   private DataProvider<POJO> _dataProvider;
   private Filter<POJO> _filter;
@@ -161,14 +165,19 @@ public class GenericTableController<POJO>
       @Override
       public void mouseClicked(MouseEvent e)
       {
-        if (e.getClickCount() == 2)
+        Point p = e.getPoint();
+        int row = table.convertRowIndexToModel(table.rowAtPoint(p));
+        int column = table.convertColumnIndexToModel(table.columnAtPoint(p));
+        if (row >= 0 && column >= 0)
         {
-          Point p = e.getPoint();
-          int row = table.convertRowIndexToModel(table.rowAtPoint(p));
-          int column = table.convertColumnIndexToModel(table.columnAtPoint(p));
-          if (row >= 0 && column >= 0)
+          int nbClicks=e.getClickCount();
+          if (nbClicks==2)
           {
-            invokeDoubleClickAction(row);
+            invokeDoubleClickAction(row,e);
+          }
+          else
+          {
+            invokeClickAction(row,column,e);
           }
         }
       }
@@ -237,14 +246,26 @@ public class GenericTableController<POJO>
     initColumns(_table);
   }
 
-  private void invokeDoubleClickAction(int row)
+  private void invokeDoubleClickAction(int row, MouseEvent sourceEvent)
   {
     POJO dataItem=_dataProvider.getAt(row);
-    ActionEvent e=new ActionEvent(dataItem,0,DOUBLE_CLICK);
+    ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_FIRST,DOUBLE_CLICK,sourceEvent.getModifiers());
     ActionListener[] als=_actionListeners.toArray(new ActionListener[_actionListeners.size()]);
     for(ActionListener al : als)
     {
       al.actionPerformed(e);
+    }
+  }
+
+  private void invokeClickAction(int row, int column, MouseEvent sourceEvent)
+  {
+    POJO dataItem=_dataProvider.getAt(row);
+    ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_FIRST,CLICK,sourceEvent.getModifiers());
+    TableColumnController<POJO,?> columnController=_columns.getAt(column);
+    ActionListener listener=columnController.getActionListener();
+    if (listener!=null)
+    {
+      listener.actionPerformed(e);
     }
   }
 

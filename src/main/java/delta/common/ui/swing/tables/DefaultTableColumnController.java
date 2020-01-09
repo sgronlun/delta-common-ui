@@ -1,5 +1,6 @@
 package delta.common.ui.swing.tables;
 
+import java.awt.event.ActionListener;
 import java.util.Comparator;
 
 import javax.swing.table.TableCellRenderer;
@@ -26,6 +27,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
   private boolean _editable;
   private Comparator<VALUE> _comparator;
   private TableCellRenderer _headerCellRenderer;
+  private ActionListener _actionListener;
 
   /**
    * Constructor.
@@ -283,6 +285,21 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
   public void setValueUpdater(CellDataUpdater<POJO> valueUpdater)
   {
     _valueUpdater=valueUpdater;
+  }
+
+  @Override
+  public ActionListener getActionListener()
+  {
+    return _actionListener;
+  }
+
+  /**
+   * Set the action listener for this column.
+   * @param actionListener
+   */
+  public void setActionListener(ActionListener actionListener)
+  {
+    _actionListener=actionListener;
   }
 
   @Override

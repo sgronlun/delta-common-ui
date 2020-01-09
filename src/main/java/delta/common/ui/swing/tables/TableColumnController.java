@@ -1,5 +1,6 @@
 package delta.common.ui.swing.tables;
 
+import java.awt.event.ActionListener;
 import java.util.Comparator;
 
 import javax.swing.table.TableCellRenderer;
@@ -95,4 +96,10 @@ public interface TableColumnController<POJO,VALUE>
    * @return a cell value updater.
    */
   CellDataUpdater<POJO> getValueUpdater();
+
+  /**
+   * Get the action listener for this column.
+   * @return an <code>ActionListener</code> or <code>null</code> if none.
+   */
+  ActionListener getActionListener();
 }
