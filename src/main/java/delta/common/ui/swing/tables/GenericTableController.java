@@ -17,12 +17,15 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.tables.renderers.ButtonRenderer;
+import delta.common.utils.NumericTools;
 import delta.common.utils.collections.filters.Filter;
 
 /**
@@ -37,9 +40,9 @@ public class GenericTableController<POJO>
    */
   public static final String DOUBLE_CLICK="double click";
   /**
-   * Click action command.
+   * Button action command.
    */
-  public static final String CLICK="click";
+  public static final String BUTTON="button";
   // Data
   private DataProvider<POJO> _dataProvider;
   private Filter<POJO> _filter;
@@ -175,10 +178,6 @@ public class GenericTableController<POJO>
           {
             invokeDoubleClickAction(row,e);
           }
-          else
-          {
-            invokeClickAction(row,column,e);
-          }
         }
       }
     };
@@ -216,6 +215,12 @@ public class GenericTableController<POJO>
       {
         column.setCellRenderer(renderer);
       }
+      // Cell editor
+      TableCellEditor editor=controller.getCellEditor();
+      if (editor!=null)
+      {
+        column.setCellEditor(editor);
+      }
       // Header cell renderer
       TableCellRenderer headerRenderer=controller.getHeaderCellRenderer();
       if (headerRenderer!=null)
@@ -249,23 +254,11 @@ public class GenericTableController<POJO>
   private void invokeDoubleClickAction(int row, MouseEvent sourceEvent)
   {
     POJO dataItem=_dataProvider.getAt(row);
-    ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_FIRST,DOUBLE_CLICK,sourceEvent.getModifiers());
+    ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_PERFORMED,DOUBLE_CLICK,sourceEvent.getModifiers());
     ActionListener[] als=_actionListeners.toArray(new ActionListener[_actionListeners.size()]);
     for(ActionListener al : als)
     {
       al.actionPerformed(e);
-    }
-  }
-
-  private void invokeClickAction(int row, int column, MouseEvent sourceEvent)
-  {
-    POJO dataItem=_dataProvider.getAt(row);
-    ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_FIRST,CLICK,sourceEvent.getModifiers());
-    TableColumnController<POJO,?> columnController=_columns.getAt(column);
-    ActionListener listener=columnController.getActionListener();
-    if (listener!=null)
-    {
-      listener.actionPerformed(e);
     }
   }
 
@@ -372,6 +365,16 @@ public class GenericTableController<POJO>
   }
 
   /**
+   * Get the object at the given row.
+   * @param row Row to use, starting at 0.
+   * @return An object.
+   */
+  public POJO getAt(int row)
+  {
+    return _dataProvider.getAt(row);
+  }
+
+  /**
    * Get the currently selected item.
    * @return An item or <code>null</code> if not found.
    */
@@ -465,6 +468,53 @@ public class GenericTableController<POJO>
   }
 
   /**
+   * Build a button column.
+   * @param id Column identifier.
+   * @param label Button label.
+   * @param width Column width.
+   * @return a column.
+   */
+  public DefaultTableColumnController<POJO,String> buildButtonColumn(String id, final String label, int width)
+  {
+    CellDataProvider<POJO,String> cell=new CellDataProvider<POJO,String>()
+    {
+      @Override
+      public String getData(POJO item)
+      {
+        return label;
+      }
+    };
+    final DefaultTableColumnController<POJO,String> column=new DefaultTableColumnController<POJO,String>(id,"",String.class,cell);
+    column.setWidthSpecs(width,width,width);
+    column.setEditable(true);
+
+    ButtonRenderer renderer=new ButtonRenderer();
+    column.setCellRenderer(renderer);
+    column.setCellEditor(renderer);
+    ActionListener al=new ActionListener()
+    {
+      @Override
+      public void actionPerformed(ActionEvent event)
+      {
+        int row=NumericTools.parseInt(event.getActionCommand(),-1);
+        if (row>=0)
+        {
+          row=_table.convertRowIndexToModel(row);
+          POJO item=getAt(row);
+          ActionListener columnAl=column.getActionListener();
+          if (columnAl!=null)
+          {
+            ActionEvent e=new ActionEvent(item,ActionEvent.ACTION_PERFORMED,BUTTON,event.getModifiers());
+            columnAl.actionPerformed(e);
+          }
+        }
+      }
+    };
+    renderer.setActionListener(al);
+    return column;
+  }
+
+  /**
    * Release all managed resources.
    */
   public void dispose()
@@ -481,6 +531,13 @@ public class GenericTableController<POJO>
     // Data
     _dataProvider=null;
     _filter=null;
+    _sort=null;
+    // Columns
+    if (_columns!=null)
+    {
+      _columns.dispose();
+      _columns=null;
+    }
   }
 
   /**

@@ -96,7 +96,10 @@ public class GenericTableModel<POJO> extends AbstractTableModel
     {
       TableColumnController<POJO,?> controller=_table.getColumnController(columnIndex);
       CellDataUpdater<POJO> updater=controller.getValueUpdater();
-      updater.setData(dataItem,aValue);
+      if (updater!=null)
+      {
+        updater.setData(dataItem,aValue);
+      }
     }
   }
 }

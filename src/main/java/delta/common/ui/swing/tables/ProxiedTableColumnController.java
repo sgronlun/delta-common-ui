@@ -3,6 +3,7 @@ package delta.common.ui.swing.tables;
 import java.awt.event.ActionListener;
 import java.util.Comparator;
 
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -95,6 +96,12 @@ public class ProxiedTableColumnController<SOURCE_POJO,POJO,VALUE> implements Tab
   }
 
   @Override
+  public TableCellEditor getCellEditor()
+  {
+    return _controller.getCellEditor();
+  }
+
+  @Override
   public TableCellRenderer getHeaderCellRenderer()
   {
     return _controller.getHeaderCellRenderer();
@@ -146,6 +153,12 @@ public class ProxiedTableColumnController<SOURCE_POJO,POJO,VALUE> implements Tab
   public ActionListener getActionListener()
   {
     return _controller.getActionListener();
+  }
+
+  @Override
+  public void dispose()
+  {
+    _controller.dispose();
   }
 
   @Override

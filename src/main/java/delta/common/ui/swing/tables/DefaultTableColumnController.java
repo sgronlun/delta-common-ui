@@ -3,7 +3,10 @@ package delta.common.ui.swing.tables;
 import java.awt.event.ActionListener;
 import java.util.Comparator;
 
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+
+import delta.common.ui.swing.misc.Disposable;
 
 /**
  * Controller for a column of a generic table.
@@ -23,6 +26,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
   private CellDataProvider<POJO,VALUE> _valueProvider;
   private CellDataUpdater<POJO> _valueUpdater;
   private TableCellRenderer _renderer;
+  private TableCellEditor _editor;
   private Boolean _useToString;
   private boolean _editable;
   private Comparator<VALUE> _comparator;
@@ -55,6 +59,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
     _sortable=true;
     _valueProvider=valueProvider;
     _renderer=null;
+    _editor=null;
     _useToString=null;
   }
 
@@ -152,10 +157,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
     _sortable=sortable;
   }
 
-  /**
-   * Get the associated cell renderer, if any.
-   * @return A renderer or <code>null</code> to use defaults.
-   */
+  @Override
   public TableCellRenderer getCellRenderer()
   {
     return _renderer;
@@ -168,6 +170,21 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
   public void setCellRenderer(TableCellRenderer renderer)
   {
     _renderer=renderer;
+  }
+
+  @Override
+  public TableCellEditor getCellEditor()
+  {
+    return _editor;
+  }
+
+  /**
+   * Set a specific cell editor.
+   * @param editor Editor to set.
+   */
+  public void setCellEditor(TableCellEditor editor)
+  {
+    _editor=editor;
   }
 
   /**
@@ -300,6 +317,22 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
   public void setActionListener(ActionListener actionListener)
   {
     _actionListener=actionListener;
+  }
+
+  @Override
+  public void dispose()
+  {
+    _valueProvider=null;
+    _valueUpdater=null;
+    if (_renderer instanceof Disposable)
+    {
+      ((Disposable)_renderer).dispose();
+      _renderer=null;
+    }
+    _editor=null;
+    _comparator=null;
+    _headerCellRenderer=null;
+    _actionListener=null;
   }
 
   @Override

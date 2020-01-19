@@ -177,4 +177,30 @@ public class TableColumnsManager<POJO>
   {
     _selectedColumns.remove(controller);
   }
+
+  /**
+   * Release all managed resources.
+   */
+  public void dispose()
+  {
+    if (_availableColumns!=null)
+    {
+      for(TableColumnController<POJO,?> column : _availableColumns)
+      {
+        column.dispose();
+      }
+      _availableColumns.clear();
+      _availableColumns=null;
+    }
+    if (_selectedColumns!=null)
+    {
+      _selectedColumns.clear();
+      _selectedColumns=null;
+    }
+    if (_columnsById!=null)
+    {
+      _columnsById.clear();
+      _columnsById=null;
+    }
+  }
 }

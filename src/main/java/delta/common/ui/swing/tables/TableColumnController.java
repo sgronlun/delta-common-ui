@@ -3,7 +3,10 @@ package delta.common.ui.swing.tables;
 import java.awt.event.ActionListener;
 import java.util.Comparator;
 
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+
+import delta.common.ui.swing.misc.Disposable;
 
 /**
  * Controller for a column of a generic table.
@@ -11,7 +14,7 @@ import javax.swing.table.TableCellRenderer;
  * @param <VALUE> Value type of the managed column.
  * @author DAM
  */
-public interface TableColumnController<POJO,VALUE>
+public interface TableColumnController<POJO,VALUE> extends Disposable
 {
   /**
    * Get the identifier for this column.
@@ -48,6 +51,12 @@ public interface TableColumnController<POJO,VALUE>
    * @return A renderer or <code>null</code> to use defaults.
    */
   TableCellRenderer getCellRenderer();
+
+  /**
+   * Get the associated cell editor, if any.
+   * @return An editor or <code>null</code> to use defaults.
+   */
+  TableCellEditor getCellEditor();
 
   /**
    * Get the associated cell renderer, if any.
