@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -484,6 +485,18 @@ public class GuiFactory
     menuItem.setForeground(FOREGROUND);
     menuItem.setBackground(BACKGROUND);
     return menuItem;
+  }
+
+  /**
+   * Build a HTML panel.
+   * @return a HTML panel.
+   */
+  public static JEditorPane buildHtmlPanel()
+  {
+    JEditorPane editor=new JEditorPane("text/html","");
+    editor.setEditable(false);
+    editor.setOpaque(false);
+    return editor;
   }
 
   /**
