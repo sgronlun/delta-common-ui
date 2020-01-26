@@ -1,6 +1,5 @@
 package delta.common.ui.swing.tables;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,17 +12,27 @@ import javax.swing.JPanel;
 import delta.common.ui.swing.GuiFactory;
 
 /**
+ * Controller for a panel that displays a table.
  * @author DAM
  */
 public class RawTablePanelController
 {
   private JPanel _panel;
 
+  /**
+   * Constructor.
+   * @param headers Header labels.
+   * @param data Cell data.
+   */
   public RawTablePanelController(List<String> headers, List<Object[]> data)
   {
     _panel=buildPanel(headers,data);
   }
 
+  /**
+   * Get the managed label.
+   * @return the managed label.
+   */
   public JPanel getPanel()
   {
     return _panel;
@@ -37,12 +46,11 @@ public class RawTablePanelController
     for(String header : headers)
     {
       JLabel headerLabel=GuiFactory.buildLabel(header);
-      headerLabel.setFont(headerLabel.getFont().deriveFont(Font.BOLD));
+      headerLabel.setFont(headerLabel.getFont().deriveFont(Font.BOLD,14));
       panel.add(headerLabel,c);
       c.gridx++;
     }
     // Rows
-    int y=0;
     for(Object[] row : data)
     {
       c.gridy++;
