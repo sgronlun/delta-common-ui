@@ -98,7 +98,7 @@ public class NavigatorWindowController extends DefaultDialogController
         Window parentWindow=controller.getWindow();
         dialog.setLocationRelativeTo(parentWindow);
       }
-      dialog.setResizable(false);
+      dialog.setResizable(true);
       ok=true;
     }
     return ok;
