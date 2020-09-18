@@ -21,6 +21,7 @@ public class ComboBoxController<T>
   private List<ComboBoxItem<T>> _items;
   private List<ItemSelectionListener<T>> _listeners;
   private Class<T> _type;
+  private boolean _listenersEnabled;
 
   /**
    * Constructor.
@@ -50,6 +51,7 @@ public class ComboBoxController<T>
     };
     _comboBox.addActionListener(al);
     _type=type;
+    _listenersEnabled=true;
   }
 
   /**
@@ -193,6 +195,18 @@ public class ComboBoxController<T>
   }
 
   /**
+   * Select an item (does not call the listeners).
+   * @param data Item to select.
+   */
+  public void setSelectedItem(T data)
+  {
+    ComboBoxItem<T> item=getItemForData(data);
+    _listenersEnabled=false;
+    _comboBox.setSelectedItem(item);
+    _listenersEnabled=true;
+  }
+
+  /**
    * Add a listener for item selection.
    * @param listener Listener to add.
    */
@@ -212,6 +226,10 @@ public class ComboBoxController<T>
 
   private void callListeners()
   {
+    if (!_listenersEnabled)
+    {
+      return;
+    }
     if (_listeners!=null)
     {
       T item=getSelectedItem();
