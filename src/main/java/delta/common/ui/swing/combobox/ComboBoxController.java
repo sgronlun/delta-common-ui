@@ -87,6 +87,53 @@ public class ComboBoxController<T>
   }
 
   /**
+   * Update the items displayed in this combo-box.
+   * Keeps the selection if possible.
+   * @param items Items to set.
+   */
+  public void updateItems(List<ComboBoxItem<T>> items)
+  {
+    _listenersEnabled=false;
+    // Try to keep selection, if any
+    ComboBoxItem<T> itemToSelect=null;
+    int index=_comboBox.getSelectedIndex();
+    if (index!=-1)
+    {
+      T selectedItem=getSelectedItem();
+      for(ComboBoxItem<T> item : items)
+      {
+        if (equal(item.getItem(),selectedItem))
+        {
+          itemToSelect=item;
+        }
+      }
+    }
+    removeAllItems();
+    for(ComboBoxItem<T> item : items)
+    {
+      _items.add(item);
+      _comboBox.addItem(item);
+    }
+    if ((index!=-1) && (itemToSelect!=null))
+    {
+      _comboBox.setSelectedItem(itemToSelect);
+      _listenersEnabled=true;
+    }
+    else
+    {
+      _listenersEnabled=true;
+      if (items.size()>0)
+      {
+        _comboBox.setSelectedItem(items.get(0));
+      }
+      else
+      {
+        _comboBox.setSelectedIndex(-1);
+      }
+    }
+  }
+
+  /**
    * Remove an item.
    * @param data Item to remove.
    */
@@ -176,7 +223,8 @@ public class ComboBoxController<T>
   {
     if (value instanceof String)
     {
-      if (Integer.class.equals(_type)) {
+      if (Integer.class.equals(_type))
+      {
         Integer intValue=NumericTools.parseInteger((String)value,false);
         return (T)intValue;
       }

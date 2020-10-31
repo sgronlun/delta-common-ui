@@ -30,6 +30,15 @@ public class ComboBoxItem<T>
     return _item;
   }
 
+  /**
+   * Get the label.
+   * @return the label.
+   */
+  public String getLabel()
+  {
+    return _label;
+  }
+
   @Override
   public String toString()
   {
