@@ -3,8 +3,8 @@ package delta.common.ui.swing.checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
@@ -16,13 +16,14 @@ import org.apache.log4j.Logger;
  * Three-state checkbox.
  * @author DAM
  */
-public class ThreeStateCheckbox extends JCheckBox implements Icon, ActionListener
+public class ThreeStateCheckbox extends JCheckBox implements Icon, ItemListener
 {
   private static final Logger LOGGER=Logger.getLogger(ThreeStateCheckbox.class);
 
   private static final Icon ICON=UIManager.getIcon("CheckBox.icon");
 
-  private boolean _halfState;
+  private ThreeState _state;
+  private boolean _inListener;
 
   /**
    * Constructor.
@@ -39,19 +40,56 @@ public class ThreeStateCheckbox extends JCheckBox implements Icon, ActionListene
   public ThreeStateCheckbox(String text)
   {
     super(text);
-    addActionListener(this);
+    _state=ThreeState.NOT_SELECTED;
+    addItemListener(this);
     setIcon(this);
+  }
+
+  @Override
+  public void itemStateChanged(ItemEvent e)
+  {
+    if (_inListener) return;
+    _inListener=true;
+
+    // Prog OR nonSelected+click => setSelected(true)=>"Selected",state=SELECTED;
+    // selected+click => setSelected(false)=>"Not selected", state=NOT_SELECTED;
+    // hal selected+click=>setSelected(true)=>"Selected"(with halfSelectged=true),state=SELECTED;
+    int state=e.getStateChange();
+    if (state==ItemEvent.SELECTED)
+    {
+      if (_state==ThreeState.HALF_SELECTED)
+      {
+        // Transition half state->selected
+        _state=ThreeState.SELECTED;
+      }
+      else
+      {
+        // Transition not-selected->half selected
+        setSelected(false);
+        _state=ThreeState.HALF_SELECTED;
+      }
+    }
+    else
+    {
+      // Transition selected->not-selected
+      _state=ThreeState.NOT_SELECTED;
+    }
+    _inListener=false;
+
+    if (LOGGER.isDebugEnabled())
+    {
+      LOGGER.debug("State: "+_state);
+    }
   }
 
   @Override
   public void paintIcon(Component c, Graphics g, int x, int y)
   {
     ICON.paintIcon(c,g,x,y);
-    if (!_halfState)
+    if (_state!=ThreeState.HALF_SELECTED)
     {
       return;
     }
-    
     int w=getIconWidth();
     int h=getIconHeight();
     g.setColor(c.isEnabled()?new Color(51,51,51):new Color(122,138,153));
@@ -77,54 +115,35 @@ public class ThreeStateCheckbox extends JCheckBox implements Icon, ActionListene
     return ICON.getIconHeight();
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e)
+  /**
+   * Get the current state.
+   * @return the current state.
+   */
+  public ThreeState getState()
   {
-    ThreeStateCheckbox tcb=(ThreeStateCheckbox)e.getSource();
-    if (_halfState)
+    return _state;
+  }
+
+  /**
+   * Set the state.
+   * @param state State to set.
+   */
+  public void setState(ThreeState state)
+  {
+    _inListener=true;
+    if (state==ThreeState.SELECTED)
     {
-      _halfState=false;
-      tcb.setSelected(true);
+      setSelected(true);
     }
     else
     {
-      if (tcb.isSelected())
-      {
-        _halfState=true;
-        tcb.setSelected(false);
-      }
-    }
-    if (LOGGER.isDebugEnabled())
-    {
-      String state=(isSelected())?"Selected":(_halfState?"Half-selected":"Not selected");
-      LOGGER.debug("State: "+state);
-    }
-  }
-
-  /**
-   * Indicates if it is half-selected or not.
-   * @return <code>true</code> if it is, <code>false</code> otherwise.
-   */
-  public boolean isHalfSelected()
-  {
-    return _halfState;
-  }
-
-  /**
-   * Set the half-selected state.
-   * @param halfState State to set.
-   */
-  public void setHalfSelected(boolean halfState)
-  {
-    _halfState=halfState;
-    if (halfState)
-    {
       setSelected(false);
     }
+    _state=state;
+    _inListener=false;
     if (LOGGER.isDebugEnabled())
     {
-      String state=(isSelected())?"Selected":(_halfState?"Half-selected":"Not selected");
-      LOGGER.debug("State: "+state);
+      LOGGER.debug("State: "+_state);
     }
     repaint();
   }

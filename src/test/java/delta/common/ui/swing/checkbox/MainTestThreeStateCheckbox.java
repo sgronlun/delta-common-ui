@@ -20,10 +20,10 @@ public class MainTestThreeStateCheckbox
     ThreeStateCheckbox cb1=new ThreeStateCheckbox("Not selected");
     panel.add(cb1);
     ThreeStateCheckbox cb2=new ThreeStateCheckbox("Half-state");
-    cb2.setHalfSelected(true);
+    cb2.setState(ThreeState.HALF_SELECTED);
     panel.add(cb2);
     ThreeStateCheckbox cb3=new ThreeStateCheckbox("Selected");
-    cb3.setSelected(true);
+    cb3.setState(ThreeState.SELECTED);
     panel.add(cb3);
     JFrame f=new JFrame();
     f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

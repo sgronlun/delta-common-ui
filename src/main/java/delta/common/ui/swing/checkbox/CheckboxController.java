@@ -43,7 +43,8 @@ public class CheckboxController
    * Indicates if the managed check-box is selected or not.
    * @return <code>true</code> if it is, <code>false</code> otherwise.
    */
-  public boolean isSelected() {
+  public boolean isSelected()
+  {
     return _checkbox.isSelected();
   }
 
