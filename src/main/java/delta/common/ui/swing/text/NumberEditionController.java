@@ -46,6 +46,24 @@ public abstract class NumberEditionController<T extends Number> extends Abstract
   }
 
   /**
+   * Get the minimum value in the managed range.
+   * @return a value or <code>null</code> if not set.
+   */
+  public T getMinValue()
+  {
+    return _minValue;
+  }
+
+  /**
+   * Get the maximum value in the managed range.
+   * @return a value or <code>null</code> if not set.
+   */
+  public T getMaxValue()
+  {
+    return _maxValue;
+  }
+
+  /**
    * Configure the text field.
    */
   private void configureTextField()
