@@ -111,11 +111,13 @@ public class IconWithText implements Icon
     }
   }
 
+  @Override
   public int getIconWidth()
   {
     return (_icon!=null)?_icon.getIconWidth():0;
   }
 
+  @Override
   public int getIconHeight()
   {
     return (_icon!=null)?_icon.getIconHeight():0;

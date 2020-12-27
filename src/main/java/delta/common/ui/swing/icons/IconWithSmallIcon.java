@@ -49,11 +49,13 @@ public class IconWithSmallIcon implements Icon
     _smallIcon=smallIcon;
   }
 
+  @Override
   public int getIconWidth()
   {
     return _icon.getIconWidth();
   }
 
+  @Override
   public int getIconHeight()
   {
     return _icon.getIconHeight();
