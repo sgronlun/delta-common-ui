@@ -98,4 +98,25 @@ public class TextFieldAndMaxLabel
     _integerEditor.setValueRange(_integerEditor.getMinValue(),Integer.valueOf(max));
     _maxLabel.setText(SLASH_SEPARATOR+max);
   }
+
+  /**
+   * Release all managed resources.
+   */
+  public void dispose()
+  {
+    // Controllers
+    if (_integerEditor!=null)
+    {
+      _integerEditor.dispose();
+      _integerEditor=null;
+    }
+    // UI
+    if (_panel!=null)
+    {
+      _panel.removeAll();
+      _panel=null;
+    }
+    _textField=null;
+    _maxLabel=null;
+  }
 }
