@@ -14,19 +14,20 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.tables.renderers.ButtonRenderer;
 import delta.common.utils.NumericTools;
 import delta.common.utils.collections.filters.Filter;
+import delta.common.utils.misc.TypedProperties;
 
 /**
  * Generic controller for a table.
@@ -449,7 +450,6 @@ public class GenericTableController<POJO>
   {
     if (sort!=null)
     {
-      RowSorter<? extends TableModel> sorter=_table.getRowSorter();
       List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
       int nbItems=sort.getNumberOfItems();
       for(int i=0;i<nbItems;i++)
@@ -463,8 +463,31 @@ public class GenericTableController<POJO>
           sortKeys.add(new RowSorter.SortKey(columnIndex.intValue(), order));
         }
       }
-      sorter.setSortKeys(sortKeys);
+      _sorter.setSortKeys(sortKeys);
     }
+  }
+
+  /**
+   * Get the current sort.
+   * @return the current sort.
+   */
+  public Sort getCurrentSort()
+  {
+    Sort sort=new Sort();
+    List<? extends SortKey> sortKeys=_sorter.getSortKeys();
+    for(SortKey sortKey : sortKeys)
+    {
+      int columnIndex=sortKey.getColumn();
+      SortOrder order=sortKey.getSortOrder();
+      if (order!=SortOrder.UNSORTED)
+      {
+        TableColumnController<POJO,?> columnManager=_columns.getAt(columnIndex);
+        String id=columnManager.getId();
+        boolean ascending=(order==SortOrder.ASCENDING);
+        sort.addSortItem(id,ascending);
+      }
+    }
+    return sort;
   }
 
   /**
@@ -512,6 +535,20 @@ public class GenericTableController<POJO>
     };
     renderer.setActionListener(al);
     return column;
+  }
+
+  /**
+   * Save current table state in preferences.
+   * @param prefs Storage for preferences.
+   */
+  public void savePreferences(TypedProperties prefs)
+  {
+    // Selected columns
+    List<String> columnIds=_columns.getSelectedColumnsIds();
+    prefs.setStringList(TablePreferencesProperties.COLUMNS_PROPERTY,columnIds);
+    // Sort
+    Sort sort=getCurrentSort();
+    prefs.setStringProperty(TablePreferencesProperties.SORT_PROPERTY,sort.asString());
   }
 
   /**

@@ -35,6 +35,17 @@ public class Sort
   }
 
   /**
+   * Add a sort item.
+   * @param id Column identifier.
+   * @param ascending Ascending or not.
+   */
+  public void addSortItem(String id, boolean ascending)
+  {
+    _ids.add(id);
+    _ascending.add(Boolean.valueOf(ascending));
+  }
+
+  /**
    * Get the number of items in this sort.
    * @return An items count.
    */
@@ -61,6 +72,33 @@ public class Sort
   public boolean isAscending(int index)
   {
     return _ascending.get(index).booleanValue();
+  }
+
+  /**
+   * Get a string representation of this sort.
+   * @return A string representation that may be used in method <code>buildFromString</code>.
+   */
+  public String asString()
+  {
+    StringBuilder sb=new StringBuilder();
+    int nbSortItems=_ids.size();
+    for(int i=0;i<nbSortItems;i++)
+    {
+      if (i>0)
+      {
+        sb.append(SORT_ITEM_SEPARATOR);
+      }
+      if (_ascending.get(i).booleanValue())
+      {
+        sb.append(SORT_ASCENDING);
+      }
+      else
+      {
+        sb.append(SORT_DESCENDING);
+      }
+      sb.append(_ids.get(i));
+    }
+    return sb.toString();
   }
 
   /**
