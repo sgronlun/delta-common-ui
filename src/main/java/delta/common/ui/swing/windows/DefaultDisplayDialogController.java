@@ -19,11 +19,11 @@ import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.OKCancelPanelController;
 
 /**
- * Base class for edition form dialog controllers.
+ * Base class for display form dialog controllers.
  * @param <T> Managed data.
  * @author DAM
  */
-public class DefaultFormDialogController<T> extends DefaultDialogController
+public class DefaultDisplayDialogController<T> extends DefaultDialogController
 {
   // Data
   protected T _data;
@@ -35,7 +35,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
    * @param parentController Parent controller.
    * @param data Data to edit.
    */
-  public DefaultFormDialogController(WindowController parentController, T data)
+  public DefaultDisplayDialogController(WindowController parentController, T data)
   {
     super(parentController);
     _data=data;
@@ -62,7 +62,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
     JPanel panel=GuiFactory.buildPanel(new BorderLayout());
     JPanel dataPanel=buildFormPanel();
     panel.add(dataPanel,BorderLayout.CENTER);
-    _okCancelController=new OKCancelPanelController();
+    _okCancelController=new OKCancelPanelController(true,false);
     JPanel okCancelPanel=_okCancelController.getPanel();
     panel.add(okCancelPanel,BorderLayout.SOUTH);
     ActionListener actionListener=new ActionListener()
@@ -74,7 +74,6 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
       }
     };
     _okCancelController.getOKButton().addActionListener(actionListener);
-    _okCancelController.getCancelButton().addActionListener(actionListener);
     return panel;
   }
 
@@ -105,7 +104,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
       {
         public void actionPerformed(ActionEvent e)
         {
-          cancel();
+          ok();
         }
       };
       rootPane.getActionMap().put(OKCancelPanelController.CANCEL_COMMAND, action);
@@ -148,25 +147,12 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
     {
       ok();
     }
-    else if (OKCancelPanelController.CANCEL_COMMAND.equals(action))
-    {
-      cancel();
-    }
   }
 
   protected void ok()
   {
-    boolean inputOk=checkInput();
-    if (inputOk)
-    {
-      okImpl();
-      dispose();
-    }
-  }
-
-  protected boolean checkInput()
-  {
-    return true;
+    okImpl();
+    dispose();
   }
 
   protected void okImpl()
@@ -174,34 +160,10 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
     // Nothing...
   }
 
-  protected void cancelImpl()
-  {
-    // Nothing...
-  }
-
-  protected void cancel()
-  {
-    cancelImpl();
-    dispose();
-    _data=null;
-  }
-
   @Override
   protected void doWindowClosing()
   {
-    cancel();
-  }
-
-  /**
-   * Modal edition.
-   * @return Edited data or <code>null</code> if unchanged.
-   */
-  public T editModal()
-  {
-    show(true);
-    T data=_data;
-    _data=null;
-    return data;
+    ok();
   }
 
   /**

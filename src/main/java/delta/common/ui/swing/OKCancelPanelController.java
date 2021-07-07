@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import delta.common.ui.swing.buttons.ButtonUtils;
+
 /**
  * Controller for a panel with OK and cancel button.
  * @author DAM
@@ -28,18 +30,34 @@ public class OKCancelPanelController
    */
   public OKCancelPanelController()
   {
-    build();
+    build(true,true);
   }
 
-  private void build()
+  /**
+   * Constructor.
+   * @param useOK Use the OK button.
+   * @param useCancel Use the cancel button.
+   */
+  public OKCancelPanelController(boolean useOK, boolean useCancel)
+  {
+    build(useOK,useCancel);
+  }
+
+  private void build(boolean useOK, boolean useCancel)
   {
     _panel=GuiFactory.buildPanel(new FlowLayout(FlowLayout.TRAILING));
-    _okButton=GuiFactory.buildButton("OK");
-    _okButton.setActionCommand(OK_COMMAND);
-    _panel.add(_okButton);
-    _cancelButton=GuiFactory.buildButton("Cancel");
-    _cancelButton.setActionCommand(CANCEL_COMMAND);
-    _panel.add(_cancelButton);
+    if (useOK)
+    {
+      _okButton=GuiFactory.buildButton("OK");
+      _okButton.setActionCommand(OK_COMMAND);
+      _panel.add(_okButton);
+    }
+    if (useCancel)
+    {
+      _cancelButton=GuiFactory.buildButton("Cancel");
+      _cancelButton.setActionCommand(CANCEL_COMMAND);
+      _panel.add(_cancelButton);
+    }
   }
 
   /**
@@ -79,7 +97,9 @@ public class OKCancelPanelController
       _panel.removeAll();
       _panel=null;
     }
+    ButtonUtils.dispose(_okButton);
     _okButton=null;
+    ButtonUtils.dispose(_cancelButton);
     _cancelButton=null;
   }
 }
