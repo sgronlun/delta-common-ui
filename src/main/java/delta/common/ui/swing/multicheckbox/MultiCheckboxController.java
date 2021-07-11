@@ -191,6 +191,7 @@ public class MultiCheckboxController<T>
     {
       checkbox.setSelected(true);
     }
+    callListeners(null);
   }
 
   /**
