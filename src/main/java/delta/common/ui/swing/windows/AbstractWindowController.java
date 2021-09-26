@@ -35,6 +35,10 @@ public abstract class AbstractWindowController implements WindowController
    * Child windows manager.
    */
   private WindowsManager _windowsManager;
+  /**
+   * Context properties
+   */
+  private TypedProperties _context;
 
   /**
    * Constructor.
@@ -44,6 +48,7 @@ public abstract class AbstractWindowController implements WindowController
   {
     _parent=parent;
     _windowsManager=new WindowsManager();
+    _context=new TypedProperties();
   }
 
   /**
@@ -245,6 +250,46 @@ public abstract class AbstractWindowController implements WindowController
     return _windowsManager;
   }
 
+  @Override
+  public <T> T getContextProperty(String propertyName, Class<T> valueClass)
+  {
+    if (_context.hasProperty(propertyName))
+    {
+      return _context.getProperty(propertyName,valueClass);
+    }
+    if (_parent!=null)
+    {
+      return _parent.getContextProperty(propertyName,valueClass);
+    }
+    return null;
+  }
+
+  @Override
+  public TypedProperties getContextProperties()
+  {
+    TypedProperties ret=null;
+    if (_parent!=null)
+    {
+      ret=_parent.getContextProperties();
+    }
+    else
+    {
+      ret=new TypedProperties();
+    }
+    ret.addProperties(_context);
+    return ret;
+  }
+
+  /**
+   * Set the value of a context property.
+   * @param propertyName Property name.
+   * @param value Value to set.
+   */
+  public void setContextProperty(String propertyName, Object value)
+  {
+    _context.setProperty(propertyName,value);
+  }
+
   /**
    * Release all managed resources.
    */
@@ -267,6 +312,7 @@ public abstract class AbstractWindowController implements WindowController
       _windowsManager.dispose();
       _windowsManager=null;
     }
+    _context=null;
     _parent=null;
   }
 }

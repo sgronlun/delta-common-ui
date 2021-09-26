@@ -57,6 +57,20 @@ public interface WindowController
   public TypedProperties getUserProperties(String id);
 
   /**
+   * Get a context property value.
+   * @param propertyName Property name.
+   * @param valueClass Value class.
+   * @return A value or <code>null</code> if not found.
+   */
+  public <T> T getContextProperty(String propertyName, Class<T> valueClass);
+
+  /**
+   * Get an aggregated view of the context properties.
+   * @return Some properties.
+   */
+  public TypedProperties getContextProperties();
+
+  /**
    * Get the child windows manager.
    * @return the child windows manager.
    */
