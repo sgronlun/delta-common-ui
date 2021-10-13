@@ -1,5 +1,6 @@
 package delta.common.ui.swing.text.dates;
 
+import java.awt.Color;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class DateEditionController implements DropListener<List<File>>, TextList
     _textField.setToolTipText(tooltip);
     installMenu();
     DNDTools.installFilesDropListener(_textField,this);
+    _textController=new DynamicTextEditionController(_textField,this);
+    _listeners=new ArrayList<DateListener>();
   }
 
   private String buildTooltip()
@@ -86,11 +89,6 @@ public class DateEditionController implements DropListener<List<File>>, TextList
    */
   public void addListener(DateListener listener)
   {
-    if (_listeners==null)
-    {
-      _textController=new DynamicTextEditionController(_textField,this);
-      _listeners=new ArrayList<DateListener>();
-    }
     _listeners.add(listener);
   }
 
@@ -100,16 +98,7 @@ public class DateEditionController implements DropListener<List<File>>, TextList
    */
   public void removeListener(DateListener listener)
   {
-    if (_listeners!=null)
-    {
-      _listeners.remove(listener);
-      if (_listeners.size()==0)
-      {
-        _textController.dispose();
-        _textController=null;
-        _listeners=null;
-      }
-    }
+    _listeners.remove(listener);
   }
 
   /**
@@ -134,6 +123,7 @@ public class DateEditionController implements DropListener<List<File>>, TextList
   public void textChanged(String newText)
   {
     Long newDate=parseDate();
+    setValid((newDate!=null));
     boolean dateChanged=!Objects.equals(_date,newDate);
     if (dateChanged)
     {
@@ -143,6 +133,18 @@ public class DateEditionController implements DropListener<List<File>>, TextList
       {
         listener.dateChanged(this,_date);
       }
+    }
+  }
+
+  private void setValid(boolean valid)
+  {
+    if (valid)
+    {
+      _textField.setForeground(Color.BLACK);
+    }
+    else
+    {
+      _textField.setForeground(Color.RED);
     }
   }
 
