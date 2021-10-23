@@ -1,5 +1,6 @@
 package delta.common.ui.swing.labels;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,6 +18,7 @@ import delta.common.ui.swing.GuiFactory;
 public class MultilineLabel2 extends JPanel
 {
   private Float _size;
+  private Color _foreground;
 
   /**
    * Constructor.
@@ -25,6 +27,7 @@ public class MultilineLabel2 extends JPanel
   {
     setOpaque(false);
     setLayout(new GridBagLayout());
+    _foreground=Color.BLACK;
   }
 
   /**
@@ -35,6 +38,15 @@ public class MultilineLabel2 extends JPanel
   {
     this();
     _size=Float.valueOf(size);
+  }
+
+  /**
+   * Set the foreground color.
+   * @param foreground Color to set.
+   */
+  public void setForegroundColor(Color foreground)
+  {
+    _foreground=foreground;
   }
 
   /**
@@ -59,6 +71,7 @@ public class MultilineLabel2 extends JPanel
     for(int i=0;i<nbLines;i++)
     {
       JLabel label=_size!=null?GuiFactory.buildLabel(text[i],_size.floatValue()):GuiFactory.buildLabel(text[i]);
+      label.setForeground(_foreground);
       GridBagConstraints c=new GridBagConstraints(0,i,1,1,1.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
       add(label,c);
     }
