@@ -17,6 +17,7 @@ import delta.common.ui.swing.GuiFactory;
  */
 public class MultilineLabel2 extends JPanel
 {
+  private Float _firstLineSize;
   private Float _size;
   private Color _foreground;
 
@@ -37,7 +38,26 @@ public class MultilineLabel2 extends JPanel
   public MultilineLabel2(float size)
   {
     this();
+    _firstLineSize=Float.valueOf(size);
     _size=Float.valueOf(size);
+  }
+
+  /**
+   * Set the font size of the first line.
+   * @param size Size to set (<code>null</code> to use default).
+   */
+  public void setFirstLineFontSize(Float size)
+  {
+    _firstLineSize=size;
+  }
+
+  /**
+   * Set the font size of the next lines.
+   * @param size Size to set (<code>null</code> to use default).
+   */
+  public void setNextLinesFontSize(Float size)
+  {
+    _size=size;
   }
 
   /**
@@ -70,7 +90,16 @@ public class MultilineLabel2 extends JPanel
     int nbLines=text.length;
     for(int i=0;i<nbLines;i++)
     {
-      JLabel label=_size!=null?GuiFactory.buildLabel(text[i],_size.floatValue()):GuiFactory.buildLabel(text[i]);
+      Float size=(i==0)?_firstLineSize:_size; 
+      JLabel label=null;
+      if (size!=null)
+      {
+        label=GuiFactory.buildLabel(text[i],size.floatValue());
+      }
+      else
+      {
+        label=GuiFactory.buildLabel(text[i]);
+      }
       label.setForeground(_foreground);
       GridBagConstraints c=new GridBagConstraints(0,i,1,1,1.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
       add(label,c);
