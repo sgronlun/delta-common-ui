@@ -21,11 +21,23 @@ public class LabelWithHalo extends JLabel
    */
   public static final Font DEFAULT_FONT=new Font(Font.DIALOG,Font.BOLD,12);
 
+  private Color _haloColor;
+
   /**
    * Constructor.
    */
   public LabelWithHalo()
   {
+    _haloColor=Color.BLACK;
+  }
+
+  /**
+   * Set the halo color.
+   * @param haloColor Color to set for the halo.
+   */
+  public void setHaloColor(Color haloColor)
+  {
+    _haloColor=haloColor;
   }
 
   @Override
@@ -63,6 +75,6 @@ public class LabelWithHalo extends JLabel
     int dy=getHeight()-metrics.getDescent()-1;
     String text=getText();
     Color color=getForeground();
-    HaloPainter.drawStringWithHalo(g,dx,dy,text,color,Color.BLACK);
+    HaloPainter.drawStringWithHalo(g,dx,dy,text,color,_haloColor);
   }
 }

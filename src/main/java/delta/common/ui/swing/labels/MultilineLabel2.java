@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,9 +19,8 @@ import delta.common.ui.swing.GuiFactory;
  */
 public class MultilineLabel2 extends JPanel
 {
-  private Float _firstLineSize;
-  private Float _size;
-  private Color _foreground;
+  private LabelLineStyle _defaultStyle;
+  private Map<Integer,LabelLineStyle> _lineStyles;
 
   /**
    * Constructor.
@@ -28,7 +29,8 @@ public class MultilineLabel2 extends JPanel
   {
     setOpaque(false);
     setLayout(new GridBagLayout());
-    _foreground=Color.BLACK;
+    _defaultStyle=LabelLineStyle.DEFAULT_LINE_STYLE;
+    _lineStyles=new HashMap<Integer,LabelLineStyle>();
   }
 
   /**
@@ -38,35 +40,44 @@ public class MultilineLabel2 extends JPanel
   public MultilineLabel2(float size)
   {
     this();
-    _firstLineSize=Float.valueOf(size);
-    _size=Float.valueOf(size);
+    _defaultStyle=_defaultStyle.setFontSize(size);
   }
 
   /**
-   * Set the font size of the first line.
-   * @param size Size to set (<code>null</code> to use default).
+   * Get the default style.
+   * @return A style.
    */
-  public void setFirstLineFontSize(Float size)
+  public LabelLineStyle getDefaultStyle()
   {
-    _firstLineSize=size;
+    return _defaultStyle;
   }
 
   /**
-   * Set the font size of the next lines.
-   * @param size Size to set (<code>null</code> to use default).
+   * Set the default style.
+   * @param defaultStyle Default style.
    */
-  public void setNextLinesFontSize(Float size)
+  public void setDefaultStyle(LabelLineStyle defaultStyle)
   {
-    _size=size;
+    _defaultStyle=defaultStyle;
+  }
+
+  /**
+   * Set the style for a single line.
+   * @param lineIndex Index of the targeted line.
+   * @param style Style to set.
+   */
+  public void setLineStyle(int lineIndex, LabelLineStyle style)
+  {
+    _lineStyles.put(Integer.valueOf(lineIndex),style);
   }
 
   /**
    * Set the foreground color.
-   * @param foreground Color to set.
+   * @param foregroundColor Color to set.
    */
-  public void setForegroundColor(Color foreground)
+  public void setForegroundColor(Color foregroundColor)
   {
-    _foreground=foreground;
+    _defaultStyle=_defaultStyle.setForegroundColor(foregroundColor);
   }
 
   /**
@@ -80,6 +91,16 @@ public class MultilineLabel2 extends JPanel
     setText(lines);
   }
 
+  private LabelLineStyle getStyleForLine(int index)
+  {
+    LabelLineStyle ret=_lineStyles.get(Integer.valueOf(index));
+    if (ret==null)
+    {
+      ret=_defaultStyle;
+    }
+    return ret;
+  }
+
   /**
    * Set displayed text.
    * @param text Multilines text.
@@ -90,17 +111,21 @@ public class MultilineLabel2 extends JPanel
     int nbLines=text.length;
     for(int i=0;i<nbLines;i++)
     {
-      Float size=(i==0)?_firstLineSize:_size; 
+      LabelLineStyle style=getStyleForLine(i);
       JLabel label=null;
-      if (size!=null)
+      if (style.isHalo())
       {
-        label=GuiFactory.buildLabel(text[i],size.floatValue());
+        LabelWithHalo haloLabel=new LabelWithHalo();
+        haloLabel.setHaloColor(style.getHaloColor());
+        label=haloLabel;
       }
       else
       {
-        label=GuiFactory.buildLabel(text[i]);
+        label=GuiFactory.buildLabel("");
       }
-      label.setForeground(_foreground);
+      label.setFont(style.getFont());
+      label.setForeground(style.getForegroundColor());
+      label.setText(text[i]);
       GridBagConstraints c=new GridBagConstraints(0,i,1,1,1.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
       add(label,c);
     }
