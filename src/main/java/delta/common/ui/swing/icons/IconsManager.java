@@ -1,5 +1,6 @@
 package delta.common.ui.swing.icons;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +24,22 @@ public class IconsManager
   {
     URL imageURL=IconsManager.class.getResource(iconPath);
     return imageURL;
+  }
+
+  /**
+   * Get a scaled version of the given image.
+   * @param source Source image.
+   * @param targetWidth Target width.
+   * @param targetHeight Target height.
+   * @return A new image.
+   */
+  public static Image getScaledImage(Image source, int targetWidth, int targetHeight)
+  {
+    if (source!=null)
+    {
+      return source.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+    }
+    return null;
   }
 
   /**
