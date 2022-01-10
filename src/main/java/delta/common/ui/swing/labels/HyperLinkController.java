@@ -48,7 +48,11 @@ public class HyperLinkController
     return _label;
   }
 
-  private void setText(String linkText)
+  /**
+   * Set link text.
+   * @param linkText Text to set.
+   */
+  public void setText(String linkText)
   {
     _label.setText("<html><a href=\"\">"+linkText+"</a></html>");
   }
