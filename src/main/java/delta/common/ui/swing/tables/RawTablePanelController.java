@@ -4,12 +4,14 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.utils.tables.DataTable;
 
 /**
  * Controller for a panel that displays a table.
@@ -26,6 +28,33 @@ public class RawTablePanelController
    */
   public RawTablePanelController(List<String> headers, List<Object[]> data)
   {
+    _panel=buildPanel(headers,data);
+  }
+
+  /**
+   * Constructor.
+   * @param table Table.
+   */
+  public RawTablePanelController(DataTable table)
+  {
+    List<String> headers=new ArrayList<String>();
+    int nbColumns=table.getNbColumns();
+    for(int i=0;i<nbColumns;i++)
+    {
+      String columnName=table.getColumn(i).getName();
+      headers.add(columnName);
+    }
+    List<Object[]> data=new ArrayList<Object[]>();
+    int nbRows=table.getNbRows();
+    for(int i=0;i<nbRows;i++)
+    {
+      Object[] row=new Object[nbColumns];
+      for(int j=0;j<nbColumns;j++)
+      {
+        row[j]=table.getData(i,j);
+      }
+      data.add(row);
+    }
     _panel=buildPanel(headers,data);
   }
 
