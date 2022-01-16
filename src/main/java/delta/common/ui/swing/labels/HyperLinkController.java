@@ -1,5 +1,6 @@
 package delta.common.ui.swing.labels;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,6 +16,8 @@ import delta.common.ui.swing.GuiFactory;
 public class HyperLinkController
 {
   private JLabel _label;
+  private Color _color;
+  private String _text;
 
   private HyperLinkAction _action;
 
@@ -49,12 +52,50 @@ public class HyperLinkController
   }
 
   /**
+   * Set the text color.
+   * @param color Color to use (<code>null</code> to use default).
+   */
+  public void setColor(Color color)
+  {
+    _color=color;
+    updateLabel();
+  }
+
+  /**
    * Set link text.
    * @param linkText Text to set.
    */
   public void setText(String linkText)
   {
-    _label.setText("<html><a href=\"\">"+linkText+"</a></html>");
+    _text=linkText;
+    updateLabel();
+  }
+
+  private void updateLabel()
+  {
+    _label.setText(buildHTML());
+  }
+
+  private String buildHTML()
+  {
+    StringBuilder sb=new StringBuilder();
+    sb.append("<html><a href=\"\"");
+    if (_color!=null)
+    {
+      sb.append(" style=\"color:").append(colorToHex(_color)).append('"');
+    }
+    sb.append('>');
+    sb.append(_text);
+    sb.append("</a></html>");
+    return sb.toString();
+  }
+
+  private String colorToHex(Color color)
+  {
+    int red=_color.getRed();
+    int green=_color.getGreen();
+    int blue=_color.getBlue();
+    return String.format("#%02x%02x%02x", Integer.valueOf(red), Integer.valueOf(green), Integer.valueOf(blue));  
   }
 
   private void doIt()
