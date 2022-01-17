@@ -8,9 +8,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import delta.common.ui.swing.combobox.ComboBoxController;
-import delta.common.ui.swing.combobox.ItemSelectionListener;
-
 /**
  * Test for the combo box controller.
  * @author DAM
