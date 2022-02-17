@@ -1,5 +1,6 @@
 package delta.common.ui.swing.tables;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.utils.tables.DataTable;
@@ -67,9 +69,28 @@ public class RawTablePanelController
     return _panel;
   }
 
+  /**
+   * Set a custom header cell.
+   * @param x Start cell.
+   * @param width Header width (cells count).
+   * @param value Header text.
+   * @param color Background color.
+   */
+  public void setHeaderCell(int x, int width, String value, Color color)
+  {
+    GridBagConstraints c=new GridBagConstraints(x,0,width,1,0.0,0.0,GridBagConstraints.CENTER,GridBagConstraints.HORIZONTAL,new Insets(2,2,2,2),5,0);
+    JLabel headerLabel=GuiFactory.buildLabel(value);
+    headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    headerLabel.setText(value);
+    headerLabel.setBackground(color);
+    headerLabel.setOpaque(true);
+    headerLabel.setFont(headerLabel.getFont().deriveFont(Font.BOLD,14));
+    _panel.add(headerLabel,c);
+  }
+
   private JPanel buildPanel(List<String> headers, List<Object[]> data)
   {
-    GridBagConstraints c=new GridBagConstraints(0,0,1,1,0.0,0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE,new Insets(2,2,2,2),0,0);
+    GridBagConstraints c=new GridBagConstraints(0,1,1,1,0.0,0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE,new Insets(2,2,2,2),0,0);
     JPanel panel=GuiFactory.buildPanel(new GridBagLayout());
     // Headers
     for(String header : headers)
