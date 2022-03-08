@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,6 +18,7 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -591,6 +594,30 @@ public class GenericTableController<POJO>
     public DateRenderer(String format)
     {
       _formatter=new SimpleDateFormat(format);
+    }
+
+    @Override
+    public void setValue(Object value)
+    {
+      setText((value == null) ? "" : _formatter.format(value));
+    }
+  }
+
+  /**
+   * Number renderer.
+   * @author DAM
+   */
+  public static class NumberRenderer extends DefaultTableCellRenderer
+  {
+    private NumberFormat _formatter;
+    /**
+     * Constructor.
+     * @param formatter Number formatter.
+     */
+    public NumberRenderer(NumberFormat formatter)
+    {
+      setHorizontalAlignment(SwingConstants.RIGHT);
+      _formatter=formatter;
     }
 
     @Override
