@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -585,7 +586,8 @@ public class GenericTableController<POJO>
    */
   public static class DateRenderer extends DefaultTableCellRenderer
   {
-    private SimpleDateFormat _formatter;
+    private DateFormat _formatter;
+
     /**
      * Constructor.
      * @param format Date format.
@@ -593,6 +595,15 @@ public class GenericTableController<POJO>
     public DateRenderer(String format)
     {
       _formatter=new SimpleDateFormat(format);
+    }
+
+    /**
+     * Constructor.
+     * @param format Date format.
+     */
+    public DateRenderer(DateFormat format)
+    {
+      _formatter=format;
     }
 
     @Override
