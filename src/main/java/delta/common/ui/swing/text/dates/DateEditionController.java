@@ -116,7 +116,8 @@ public class DateEditionController implements DropListener<List<File>>, TextList
    * Get the managed text field.
    * @return the managed text field.
    */
-  public JTextField getTextField() {
+  public JTextField getTextField()
+  {
     return _textField;
   }
 
