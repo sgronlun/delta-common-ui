@@ -1,6 +1,7 @@
 package delta.common.ui.swing.text;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.JTextField;
 
@@ -12,7 +13,7 @@ import delta.common.utils.NumericTools;
  */
 public class FloatEditionController extends NumberEditionController<Float>
 {
-  private DecimalFormat _format;
+  private NumberFormat _format;
 
   /**
    * Constructor.
@@ -31,6 +32,15 @@ public class FloatEditionController extends NumberEditionController<Float>
   public void setFormat(String pattern)
   {
     _format=new DecimalFormat(pattern);
+  }
+
+  /**
+   * Set the format to use to format the displayed value.
+   * @param format Format to set.
+   */
+  public void setFormat(NumberFormat format)
+  {
+    _format=format;
   }
 
   /**
@@ -54,6 +64,7 @@ public class FloatEditionController extends NumberEditionController<Float>
   protected Float parseValue(String text)
   {
     Float ret=null;
+    // TODO Use format
     Float value=NumericTools.parseFloat(text);
     if (value!=null)
     {
