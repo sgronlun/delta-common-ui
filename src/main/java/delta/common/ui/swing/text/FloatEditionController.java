@@ -5,6 +5,8 @@ import java.text.NumberFormat;
 
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 import delta.common.utils.NumericTools;
 
 /**
@@ -13,6 +15,8 @@ import delta.common.utils.NumericTools;
  */
 public class FloatEditionController extends NumberEditionController<Float>
 {
+  private static final Logger LOGGER=Logger.getLogger(FloatEditionController.class);
+
   private NumberFormat _format;
 
   /**
@@ -63,9 +67,20 @@ public class FloatEditionController extends NumberEditionController<Float>
   @Override
   protected Float parseValue(String text)
   {
+    Float value=null;
+    try
+    {
+      Number parsedValue=_format.parse(text);
+      if (parsedValue!=null)
+      {
+        value=Float.valueOf(parsedValue.floatValue());
+      }
+    }
+    catch(Exception e)
+    {
+      LOGGER.warn("Parsing error!",e);
+    }
     Float ret=null;
-    // TODO Use format
-    Float value=NumericTools.parseFloat(text);
     if (value!=null)
     {
       ret=value;
