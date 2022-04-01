@@ -7,8 +7,6 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
-import delta.common.utils.NumericTools;
-
 /**
  * Float edition controller using a text field.
  * @author DAM
