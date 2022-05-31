@@ -17,6 +17,8 @@ public class TableColumnsManager<POJO>
   private HashMap<String,TableColumnController<POJO,?>> _columnsById;
   // Selected columns
   private List<TableColumnController<POJO,?>> _selectedColumns;
+  // Default columns
+  private List<String> _defaultColumnsIds;
 
   /**
    * Constructor.
@@ -26,6 +28,7 @@ public class TableColumnsManager<POJO>
     _availableColumns=new ArrayList<TableColumnController<POJO,?>>();
     _columnsById=new HashMap<String,TableColumnController<POJO,?>>();
     _selectedColumns=new ArrayList<TableColumnController<POJO,?>>();
+    _defaultColumnsIds=new ArrayList<String>();
   }
 
   /**
@@ -35,6 +38,25 @@ public class TableColumnsManager<POJO>
   public List<TableColumnController<POJO,?>> getAvailableColumns()
   {
     return _availableColumns;
+  }
+
+  /**
+   * Get the default column IDs.
+   * @return the default column IDs.
+   */
+  public List<String> getDefaultColumnsIds()
+  {
+    return new ArrayList<String>(_defaultColumnsIds);
+  }
+
+  /**
+   * Set the default column IDs.
+   * @param defaultColumnsIds IDs to set.
+   */
+  public void setDefaultColumnsIds(List<String> defaultColumnsIds)
+  {
+    _defaultColumnsIds.clear();
+    _defaultColumnsIds.addAll(defaultColumnsIds);
   }
 
   /**

@@ -27,6 +27,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.tables.actions.ActionsManager;
 import delta.common.ui.swing.tables.renderers.ButtonRenderer;
 import delta.common.utils.NumericTools;
 import delta.common.utils.collections.filters.Filter;
@@ -57,8 +58,9 @@ public class GenericTableController<POJO>
   private JTable _table;
   private GenericTableModel<POJO> _model;
   private TableRowSorter<GenericTableModel<POJO>> _sorter;
-  // Control
+  // Actions
   private List<ActionListener> _actionListeners;
+  private ActionsManager<POJO> _actions;
 
   /**
    * Constructor.
@@ -70,6 +72,7 @@ public class GenericTableController<POJO>
     _filter=null;
     _columns=new TableColumnsManager<POJO>();
     _actionListeners=new ArrayList<ActionListener>();
+    _actions=new ActionsManager<>();
   }
 
   /**
@@ -258,12 +261,16 @@ public class GenericTableController<POJO>
   private void invokeDoubleClickAction(int row, MouseEvent sourceEvent)
   {
     POJO dataItem=_dataProvider.getAt(row);
-    ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_PERFORMED,DOUBLE_CLICK,sourceEvent.getModifiers());
-    ActionListener[] als=_actionListeners.toArray(new ActionListener[_actionListeners.size()]);
-    for(ActionListener al : als)
+    if (_actionListeners.size()>0)
     {
-      al.actionPerformed(e);
+      ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_PERFORMED,DOUBLE_CLICK,sourceEvent.getModifiers());
+      ActionListener[] als=_actionListeners.toArray(new ActionListener[_actionListeners.size()]);
+      for(ActionListener al : als)
+      {
+        al.actionPerformed(e);
+      }
     }
+    _actions.invokeDoubleClickActions(dataItem);
   }
 
   /**
@@ -280,7 +287,7 @@ public class GenericTableController<POJO>
    * @param index Index of the targeted column, starting at 0.
    * @return A column controller.
    */
-  public TableColumnController<POJO,?> getColumnController(int index)
+  TableColumnController<POJO,?> getColumnController(int index)
   {
     return _columns.getAt(index);
   }
@@ -292,6 +299,15 @@ public class GenericTableController<POJO>
   public int getColumnCount()
   {
     return _columns.getSelectedColumnsCount();
+  }
+
+  /**
+   * Get the actions manager.
+   * @return the actions manager.
+   */
+  public ActionsManager<POJO> getActionsManager()
+  {
+    return _actions;
   }
 
   /**
