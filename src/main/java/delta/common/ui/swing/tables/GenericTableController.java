@@ -27,8 +27,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.selection.SelectionManager;
 import delta.common.ui.swing.tables.actions.ActionsManager;
 import delta.common.ui.swing.tables.renderers.ButtonRenderer;
+import delta.common.ui.swing.tables.selection.TableSelectionManager;
 import delta.common.utils.NumericTools;
 import delta.common.utils.collections.filters.Filter;
 import delta.common.utils.misc.TypedProperties;
@@ -61,6 +63,8 @@ public class GenericTableController<POJO>
   // Actions
   private List<ActionListener> _actionListeners;
   private ActionsManager<POJO> _actions;
+  // Selection
+  private TableSelectionManager<POJO> _selectionMgr;
 
   /**
    * Constructor.
@@ -73,6 +77,7 @@ public class GenericTableController<POJO>
     _columns=new TableColumnsManager<POJO>();
     _actionListeners=new ArrayList<ActionListener>();
     _actions=new ActionsManager<>();
+    _selectionMgr=new TableSelectionManager<POJO>(this);
   }
 
   /**
@@ -189,6 +194,8 @@ public class GenericTableController<POJO>
       }
     };
     table.addMouseListener(doucleClickAdapter);
+    // Selection management
+    table.getSelectionModel().addListSelectionListener(_selectionMgr);
     return table;
   }
 
@@ -311,6 +318,15 @@ public class GenericTableController<POJO>
   }
 
   /**
+   * Get the selection manager.
+   * @return the selection manager.
+   */
+  public SelectionManager<POJO> getSelectionManager()
+  {
+    return _selectionMgr;
+  }
+
+  /**
    * Add an action listener.
    * @param al Action listener to add.
    */
@@ -395,6 +411,18 @@ public class GenericTableController<POJO>
   }
 
   /**
+   * Get the element at the given view index.
+   * @param index Index to use.
+   * @return An element.
+   */
+  public POJO getAtViewIndex(int index)
+  {
+    int modelIndex=_table.convertRowIndexToModel(index);
+    POJO data=_dataProvider.getAt(modelIndex);
+    return data;
+  }
+
+  /**
    * Get the currently selected item.
    * @return An item or <code>null</code> if not found.
    */
@@ -404,8 +432,7 @@ public class GenericTableController<POJO>
     int selectedItemIndex=_table.getSelectedRow();
     if (selectedItemIndex!=-1)
     {
-      int modelIndex=_table.convertRowIndexToModel(selectedItemIndex);
-      ret=_dataProvider.getAt(modelIndex);
+      ret=getAtViewIndex(selectedItemIndex);
     }
     return ret;
   }
@@ -541,8 +568,7 @@ public class GenericTableController<POJO>
         int row=NumericTools.parseInt(event.getActionCommand(),-1);
         if (row>=0)
         {
-          row=_table.convertRowIndexToModel(row);
-          POJO item=getAt(row);
+          POJO item=getAtViewIndex(row);
           ActionListener columnAl=column.getActionListener();
           if (columnAl!=null)
           {
@@ -593,6 +619,19 @@ public class GenericTableController<POJO>
     {
       _columns.dispose();
       _columns=null;
+    }
+    // Actions
+    if (_actions!=null)
+    {
+      _actions.dispose();
+      _actions=null;
+    }
+    _actionListeners=null;
+    // Selection
+    if (_selectionMgr!=null)
+    {
+      _selectionMgr.dispose();
+      _selectionMgr=null;
     }
   }
 

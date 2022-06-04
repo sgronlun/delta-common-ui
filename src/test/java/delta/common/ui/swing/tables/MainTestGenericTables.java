@@ -1,6 +1,7 @@
 package delta.common.ui.swing.tables;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -11,7 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.selection.SelectionChangedEvent;
+import delta.common.ui.swing.selection.SelectionChangedListener;
 import delta.common.ui.swing.tables.DataItem.SEX;
+import delta.common.ui.swing.tables.actions.SimpleAction;
 
 /**
  * Test for the generic tables.
@@ -26,21 +31,37 @@ public class MainTestGenericTables
   private void doIt()
   {
     _table=buildTable();
-    JFrame f=new JFrame();
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    final JFrame f=new JFrame();
+    f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     JPanel panel=new JPanel(new BorderLayout());
     JScrollPane scroll=new JScrollPane(_table.getTable());
     panel.add(scroll,BorderLayout.CENTER);
-    JButton b=new JButton("Update columns");
-    ActionListener al=new ActionListener()
+    // Button: update columns
+    JButton updateColumns=new JButton("Update columns");
+    ActionListener alUpdateColumns=new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
         updateColumns();
       }
     };
-    b.addActionListener(al);
-    panel.add(b,BorderLayout.SOUTH);
+    updateColumns.addActionListener(alUpdateColumns);
+    // Button: close
+    JButton close=new JButton("Close");
+    ActionListener alClose=new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        _table.dispose();
+        f.dispose();
+      }
+    };
+    close.addActionListener(alClose);
+    // Buttons panel
+    JPanel buttonsPanel=GuiFactory.buildPanel(new FlowLayout());
+    buttonsPanel.add(updateColumns);
+    buttonsPanel.add(close);
+    panel.add(buttonsPanel,BorderLayout.SOUTH);
     f.getContentPane().add(panel);
     f.pack();
     f.setVisible(true);
@@ -109,6 +130,26 @@ public class MainTestGenericTables
     DefaultTableColumnController<DataItem,SEX> sexColumn=new DefaultTableColumnController<DataItem,SEX>("SEX",SEX.class,sexCell);
     sexColumn.setWidthSpecs(100,200,150);
     table.addColumnController(sexColumn);
+    // Selection listener
+    SelectionChangedListener<DataItem> listener=new SelectionChangedListener<DataItem>()
+    {
+      @Override
+      public void selectionChanged(SelectionChangedEvent<DataItem> event)
+      {
+        System.out.println("Selection changed: "+event);
+      }
+    };
+    table.getSelectionManager().getListeners().addListener(listener);
+    // Action listener
+    SimpleAction<DataItem> doubleClickAction=new SimpleAction<DataItem>()
+    {
+      @Override
+      public void doIt(DataItem data)
+      {
+        System.out.println("Double click on: "+data);
+      }
+    };
+    table.getActionsManager().addDoubleClickAction(doubleClickAction);
     return table;
   }
 

@@ -3,12 +3,14 @@ package delta.common.ui.swing.tables.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import delta.common.ui.swing.misc.Disposable;
+
 /**
  * Manager for actions.
  * @author DAM
  * @param <T> Type of managed data.
  */
-public class ActionsManager<T>
+public class ActionsManager<T> implements Disposable
 {
   private List<SimpleAction<T>> _actions;
 
@@ -39,5 +41,11 @@ public class ActionsManager<T>
     {
       action.doIt(data);
     }
+  }
+
+  @Override
+  public void dispose()
+  {
+    _actions=null;
   }
 }
