@@ -123,8 +123,11 @@ public class Sort
         ascending=false;
         sortItem=sortItem.substring(SORT_DESCENDING.length());
       }
-      sort._ids.add(sortItem);
-      sort._ascending.add(Boolean.valueOf(ascending));
+      if (sortItem.length()>0)
+      {
+        sort._ids.add(sortItem);
+        sort._ascending.add(Boolean.valueOf(ascending));
+      }
     }
     return sort;
   }

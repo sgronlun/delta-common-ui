@@ -59,8 +59,9 @@ public class GenericTablePanelController<T> implements FilterUpdateListener
   private JPanel build()
   {
     JPanel panel=GuiFactory.buildPanel(new BorderLayout());
-    TitledBorder itemsFrameBorder=GuiFactory.buildTitledBorder("Members");
-    panel.setBorder(itemsFrameBorder);
+    // TODO Title!!
+    TitledBorder border=GuiFactory.buildTitledBorder("Members");
+    panel.setBorder(border);
 
     // Table
     JTable table=_tableController.getTable();

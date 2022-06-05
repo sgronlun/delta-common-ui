@@ -65,6 +65,8 @@ public class GenericTableController<POJO>
   private ActionsManager<POJO> _actions;
   // Selection
   private TableSelectionManager<POJO> _selectionMgr;
+  // Preferences
+  private TablePreferencesManager<POJO> _preferencesMgr;
 
   /**
    * Constructor.
@@ -78,6 +80,7 @@ public class GenericTableController<POJO>
     _actionListeners=new ArrayList<ActionListener>();
     _actions=new ActionsManager<>();
     _selectionMgr=new TableSelectionManager<POJO>(this);
+    _preferencesMgr=new TablePreferencesManager<>(this);
   }
 
   /**
@@ -324,6 +327,15 @@ public class GenericTableController<POJO>
   public SelectionManager<POJO> getSelectionManager()
   {
     return _selectionMgr;
+  }
+
+  /**
+   * Get the preferences manager.
+   * @return the preferences manager.
+   */
+  public TablePreferencesManager<POJO> getPreferencesManager()
+  {
+    return _preferencesMgr;
   }
 
   /**
@@ -601,6 +613,13 @@ public class GenericTableController<POJO>
    */
   public void dispose()
   {
+    // Preferences
+    if (_preferencesMgr!=null)
+    {
+      _preferencesMgr.savePreferences();
+      _preferencesMgr.dispose();
+      _preferencesMgr=null;
+    }
     // GUI
     if (_table!=null)
     {
