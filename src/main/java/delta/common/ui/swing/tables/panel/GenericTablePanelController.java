@@ -30,6 +30,8 @@ public class GenericTablePanelController<T> implements FilterUpdateListener
   private CountsDisplayController<T> _countsController;
   // Controllers
   private WindowController _parent;
+  // Configuration
+  private GenericTablePanelConfiguration _configuration;
 
   /**
    * Constructor.
@@ -41,6 +43,16 @@ public class GenericTablePanelController<T> implements FilterUpdateListener
     _parent=parent;
     _tableController=tableController;
     _countsController=new CountsDisplayController<T>(tableController);
+    _configuration=new GenericTablePanelConfiguration();
+  }
+
+  /**
+   * Get the configuration for this panel.
+   * @return the configuration for this panel.
+   */
+  public GenericTablePanelConfiguration getConfiguration()
+  {
+    return _configuration;
   }
 
   /**
@@ -59,10 +71,14 @@ public class GenericTablePanelController<T> implements FilterUpdateListener
   private JPanel build()
   {
     JPanel panel=GuiFactory.buildPanel(new BorderLayout());
-    // TODO Title!!
-    TitledBorder border=GuiFactory.buildTitledBorder("Members");
-    panel.setBorder(border);
 
+    // Border
+    String borderTitle=_configuration.getBorderTitle();
+    if (borderTitle!=null)
+    {
+      TitledBorder border=GuiFactory.buildTitledBorder(borderTitle);
+      panel.setBorder(border);
+    }
     // Table
     JTable table=_tableController.getTable();
     JScrollPane scroll=GuiFactory.buildScrollPane(table);
@@ -118,5 +134,6 @@ public class GenericTablePanelController<T> implements FilterUpdateListener
       _countsController=null;
     }
     _parent=null;
+    _configuration=null;
   }
 }
