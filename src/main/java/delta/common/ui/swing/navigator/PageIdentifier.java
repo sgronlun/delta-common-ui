@@ -85,6 +85,16 @@ public class PageIdentifier
   }
 
   /**
+   * Get a string parameter.
+   * @param parameterName Name of the parameter to get.
+   * @return A <code>String</code> or <code>null</code> if not found.
+   */
+  public String getStringParameter(String parameterName)
+  {
+    return _parameters.get(parameterName);
+  }
+
+  /**
    * Get full address.
    * @return a string representation of this identifier.
    */
