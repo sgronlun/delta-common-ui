@@ -280,7 +280,10 @@ public class GenericTableController<POJO>
         al.actionPerformed(e);
       }
     }
-    _actions.invokeDoubleClickActions(dataItem);
+    if (_actions!=null)
+    {
+      _actions.invokeDoubleClickActions(dataItem);
+    }
   }
 
   /**
