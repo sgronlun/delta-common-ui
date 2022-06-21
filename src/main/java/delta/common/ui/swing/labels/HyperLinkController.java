@@ -27,8 +27,18 @@ public class HyperLinkController
    */
   public HyperLinkController(HyperLinkAction action)
   {
+    this(action,GuiFactory.buildLabel(""));
+  }
+
+  /**
+   * Constructor.
+   * @param action Hyperlink action.
+   * @param label Label to use.
+   */
+  public HyperLinkController(HyperLinkAction action, JLabel label)
+  {
     _action=action;
-    _label=GuiFactory.buildLabel("");
+    _label=label;
     _label.setCursor(new Cursor(Cursor.HAND_CURSOR));
     _label.addMouseListener(new MouseAdapter()
     {
@@ -73,7 +83,14 @@ public class HyperLinkController
 
   private void updateLabel()
   {
-    _label.setText(buildHTML());
+    if (_label instanceof LabelWithHalo)
+    {
+      _label.setText(_text);
+    }
+    else
+    {
+      _label.setText(buildHTML());
+    }
   }
 
   private String buildHTML()
