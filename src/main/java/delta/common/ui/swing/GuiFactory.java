@@ -115,7 +115,7 @@ public class GuiFactory
    */
   public static BufferedImage getBackgroundImage()
   {
-    BufferedImage backgroundImage=IconsManager.getImage("/resources/gui/fond.png");
+    BufferedImage backgroundImage=IconsManager.getImage("/gui/fond.png");
     return backgroundImage;
   }
 
