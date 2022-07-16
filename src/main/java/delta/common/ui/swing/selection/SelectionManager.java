@@ -54,7 +54,11 @@ public abstract class SelectionManager<POJO> implements ListSelectionListener,Di
     return _listeners;
   }
 
-  private List<POJO> getSelection()
+  /**
+   * Get the current selection.
+   * @return a possibly empty but never <code>null</code> list of selected items.
+   */
+  public List<POJO> getSelection()
   {
     List<POJO> ret=new ArrayList<POJO>();
     ListSelectionModel lsm=getSelectionModel();
