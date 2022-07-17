@@ -11,6 +11,7 @@ public class ToolbarIconItem implements ToolbarItem
   private String _actionId;
   private String _tooltip;
   private String _alternativeText;
+  private boolean _useBorder;
 
   /**
    * Constructor.
@@ -27,6 +28,7 @@ public class ToolbarIconItem implements ToolbarItem
     _actionId=actionId;
     _tooltip=tooltip;
     _alternativeText=altText;
+    _useBorder=false;
   }
 
   /**
@@ -72,6 +74,24 @@ public class ToolbarIconItem implements ToolbarItem
   public String getAlternativeText()
   {
     return _alternativeText;
+  }
+
+  /**
+   * Indicates if this item uses a border or not.
+   * @return <code>true</code> to use a border, <code>false</code> otherwise.
+   */
+  public boolean useBorder()
+  {
+    return _useBorder;
+  }
+
+  /**
+   * Set the 'use border' flag.
+   * @param useBorder Value to set.
+   */
+  public void setUseBorder(boolean useBorder)
+  {
+    _useBorder=useBorder;
   }
 
   @Override

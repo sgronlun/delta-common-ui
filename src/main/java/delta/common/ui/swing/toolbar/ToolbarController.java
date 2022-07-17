@@ -127,11 +127,15 @@ public class ToolbarController implements ActionListener
       if (altText==null) altText="???";
       button.setText(altText);
     }
-    button.setMargin(new Insets(1,1,1,1));
-    button.setContentAreaFilled(false);
-    button.setBorderPainted(false);
-    //button.setRequestFocusEnabled(false);
-    //button.setFocusPainted(false);
+    boolean useBorder=item.useBorder();
+    if (!useBorder)
+    {
+      button.setMargin(new Insets(1,1,1,1));
+      button.setContentAreaFilled(false);
+      button.setBorderPainted(false);
+      //button.setRequestFocusEnabled(false);
+      //button.setFocusPainted(false);
+    }
     button.setEnabled(true);
     _items.put(itemId,button);
     return button;
