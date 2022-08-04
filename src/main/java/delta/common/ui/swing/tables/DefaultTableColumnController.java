@@ -20,7 +20,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
   private int _minWidth;
   private int _maxWidth;
   private int _preferredWidth;
-  private Class<VALUE> _dataType;
+  private Class<? extends VALUE> _dataType;
   private String _header;
   private boolean _sortable;
   private CellDataProvider<POJO,VALUE> _valueProvider;
@@ -39,7 +39,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
    * @param dataType Type of data in the column.
    * @param valueProvider Provider for cell values.
    */
-  public DefaultTableColumnController(String header, Class<VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
+  public DefaultTableColumnController(String header, Class<? extends VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
   {
     this(header,header,dataType,valueProvider);
   }
@@ -51,7 +51,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
    * @param dataType Type of data in the column.
    * @param valueProvider Provider for cell values.
    */
-  public DefaultTableColumnController(String id, String header, Class<VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
+  public DefaultTableColumnController(String id, String header, Class<? extends VALUE> dataType, CellDataProvider<POJO,VALUE> valueProvider)
   {
     _id=id;
     _header=header;
@@ -263,7 +263,7 @@ public class DefaultTableColumnController<POJO,VALUE> implements TableColumnCont
    * Get the type of data in the managed column.
    * @return a data type.
    */
-  public Class<VALUE> getDataType()
+  public Class<? extends VALUE> getDataType()
   {
     return _dataType;
   }

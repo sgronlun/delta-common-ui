@@ -126,7 +126,7 @@ public class ProxiedTableColumnController<SOURCE_POJO,POJO,VALUE> implements Tab
   }
 
   @Override
-  public Class<VALUE> getDataType()
+  public Class<? extends VALUE> getDataType()
   {
     return _controller.getDataType();
   }

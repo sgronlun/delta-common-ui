@@ -86,7 +86,7 @@ public interface TableColumnController<POJO,VALUE> extends Disposable
    * Get the type of data in the managed column.
    * @return a data type.
    */
-  Class<VALUE> getDataType();
+  Class<? extends VALUE> getDataType();
 
   /**
    * Get the header label for this column.
