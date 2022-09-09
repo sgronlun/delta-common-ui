@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>delta-common-ui</artifactId>
   <packaging>jar</packaging>
-  <version>1.21</version>
+  <version>1.3-SNAPSHOT</version>
   <name>common-ui</name>
   <parent>
     <groupId>com.dam.delta4j</groupId>
@@ -15,6 +15,11 @@
       <groupId>com.dam.delta4j</groupId>
       <artifactId>delta-common</artifactId>
       <version>1.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.dam.delta4j</groupId>
+      <artifactId>delta-common-l10n</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
