@@ -2,17 +2,19 @@ package delta.common.ui.swing.tables;
 
 import java.awt.Component;
 
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
+
+import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /**
  * A table header cell renderer that uses a tooltip.
  * @author DAM
  */
-public class TableHeaderCellRenderer extends DefaultTableCellRenderer
+@SuppressWarnings("restriction")
+public class TableHeaderCellRenderer extends DefaultTableCellHeaderRenderer
 {
   /**
    * Constructor.
@@ -27,19 +29,12 @@ public class TableHeaderCellRenderer extends DefaultTableCellRenderer
   @Override
   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
   {
-    if (table!=null)
+    Component ret=super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
+    if (ret instanceof JComponent)
     {
-      JTableHeader header=table.getTableHeader();
-      if (header!=null)
-      {
-        setForeground(header.getForeground());
-        setBackground(header.getBackground());
-        setFont(header.getFont());
-      }
+      String text=(value==null)?"":value.toString();
+      ((JComponent)ret).setToolTipText(text);
     }
-    String text=(value==null)?"":value.toString();
-    setText(text);
-    setToolTipText(text);
     return this;
   }
 }
