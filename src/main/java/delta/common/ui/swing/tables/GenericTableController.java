@@ -244,6 +244,10 @@ public class GenericTableController<POJO>
       {
         column.setHeaderRenderer(headerRenderer);
       }
+      else
+      {
+        column.setHeaderRenderer(new TableHeaderCellRenderer());
+      }
       // Sort
       boolean sortable=controller.isSortable();
       _sorter.setSortable(i,sortable);
