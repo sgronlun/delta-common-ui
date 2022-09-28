@@ -17,6 +17,8 @@ import delta.common.ui.swing.selection.SelectionChangedEvent;
 import delta.common.ui.swing.selection.SelectionChangedListener;
 import delta.common.ui.swing.tables.DataItem.SEX;
 import delta.common.ui.swing.tables.actions.SimpleAction;
+import delta.common.ui.swing.tables.export.DataExport;
+import delta.common.ui.swing.tables.export.SimpleExportDataOutput;
 
 /**
  * Test for the generic tables.
@@ -57,10 +59,23 @@ public class MainTestGenericTables
       }
     };
     close.addActionListener(alClose);
+    // Button: export
+    JButton export=new JButton("Export");
+    ActionListener alExport=new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        SimpleExportDataOutput output=new SimpleExportDataOutput();
+        DataExport<DataItem> exporter=new DataExport<DataItem>(output);
+        exporter.export(_table);
+      }
+    };
+    export.addActionListener(alExport);
     // Buttons panel
     JPanel buttonsPanel=GuiFactory.buildPanel(new FlowLayout());
     buttonsPanel.add(updateColumns);
     buttonsPanel.add(close);
+    buttonsPanel.add(export);
     panel.add(buttonsPanel,BorderLayout.SOUTH);
     f.getContentPane().add(panel);
     f.pack();
