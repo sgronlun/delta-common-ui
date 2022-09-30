@@ -14,8 +14,6 @@ import javax.swing.border.TitledBorder;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.tables.GenericTableController;
 import delta.common.ui.swing.tables.TableColumnsChooserController;
-import delta.common.ui.swing.tables.export.DataExport;
-import delta.common.ui.swing.tables.export.SimpleExportDataOutput;
 import delta.common.ui.swing.windows.WindowController;
 
 /**
@@ -102,6 +100,7 @@ public class GenericTablePanelController<T> implements FilterUpdateListener
     choose.addActionListener(al);
     statsPanel.add(choose);
     // Button to export
+    /*
     JButton export=GuiFactory.buildButton("Export...");
     ActionListener alExport=new ActionListener()
     {
@@ -114,6 +113,7 @@ public class GenericTablePanelController<T> implements FilterUpdateListener
     };
     export.addActionListener(alExport);
     statsPanel.add(export);
+    */
     panel.add(statsPanel,BorderLayout.NORTH);
     // Force counters init
     filterUpdated();
