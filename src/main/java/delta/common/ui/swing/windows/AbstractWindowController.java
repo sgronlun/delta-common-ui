@@ -10,6 +10,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.utils.context.Context;
+import delta.common.utils.context.SimpleContextImpl;
 import delta.common.utils.misc.Preferences;
 import delta.common.utils.misc.TypedProperties;
 
@@ -38,7 +40,7 @@ public abstract class AbstractWindowController implements WindowController
   /**
    * Context properties
    */
-  private TypedProperties _context;
+  private Context _context;
 
   /**
    * Constructor.
@@ -48,7 +50,12 @@ public abstract class AbstractWindowController implements WindowController
   {
     _parent=parent;
     _windowsManager=new WindowsManager();
-    _context=new TypedProperties();
+    SimpleContextImpl context=new SimpleContextImpl();
+    if (parent!=null)
+    {
+      context.setParentContext(parent.getContext());
+    }
+    _context=context;
   }
 
   /**
@@ -251,33 +258,15 @@ public abstract class AbstractWindowController implements WindowController
   }
 
   @Override
+  public Context getContext()
+  {
+    return _context;
+  }
+  
+  @Override
   public <T> T getContextProperty(String propertyName, Class<T> valueClass)
   {
-    if (_context.hasProperty(propertyName))
-    {
-      return _context.getProperty(propertyName,valueClass);
-    }
-    if (_parent!=null)
-    {
-      return _parent.getContextProperty(propertyName,valueClass);
-    }
-    return null;
-  }
-
-  @Override
-  public TypedProperties getContextProperties()
-  {
-    TypedProperties ret=null;
-    if (_parent!=null)
-    {
-      ret=_parent.getContextProperties();
-    }
-    else
-    {
-      ret=new TypedProperties();
-    }
-    ret.addProperties(_context);
-    return ret;
+    return _context.getValue(propertyName,valueClass);
   }
 
   /**
@@ -287,7 +276,7 @@ public abstract class AbstractWindowController implements WindowController
    */
   public void setContextProperty(String propertyName, Object value)
   {
-    _context.setProperty(propertyName,value);
+    _context.setValue(propertyName,value);
   }
 
   /**
