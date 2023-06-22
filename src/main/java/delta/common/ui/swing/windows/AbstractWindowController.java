@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.area.AbstractAreaController;
 import delta.common.utils.context.Context;
 import delta.common.utils.context.SimpleContextImpl;
 import delta.common.utils.misc.Preferences;
@@ -19,7 +20,7 @@ import delta.common.utils.misc.TypedProperties;
  * Base class for window controllers (both dialog and frame controllers).
  * @author DAM
  */
-public abstract class AbstractWindowController implements WindowController
+public abstract class AbstractWindowController extends AbstractAreaController implements WindowController
 {
   /**
    * Parent controller, if any.
@@ -48,6 +49,7 @@ public abstract class AbstractWindowController implements WindowController
    */
   public AbstractWindowController(WindowController parent)
   {
+    super(parent);
     _parent=parent;
     _windowsManager=new WindowsManager();
     SimpleContextImpl context=new SimpleContextImpl();
@@ -284,6 +286,7 @@ public abstract class AbstractWindowController implements WindowController
    */
   public void dispose()
   {
+    super.dispose();
     if (_window!=null)
     {
       if (_closeWindowAdapter!=null)
