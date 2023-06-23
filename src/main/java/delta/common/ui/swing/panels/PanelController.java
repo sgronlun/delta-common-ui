@@ -13,7 +13,7 @@ public interface PanelController extends AreaController,Disposable
 {
   /**
    * Get the managed panel.
-   * @return
+   * @return the managed panel.
    */
   JPanel getPanel();
 }

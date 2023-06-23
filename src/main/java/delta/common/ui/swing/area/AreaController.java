@@ -12,7 +12,10 @@ public interface AreaController
    * Get the parent controller.
    * @return the parent controller.
    */
-  AreaController getParentController();
+  default AreaController getParentController()
+  {
+    return null;
+  }
 
   /**
    * Get the closest window controller.
