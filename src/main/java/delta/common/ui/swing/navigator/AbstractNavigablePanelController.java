@@ -20,6 +20,10 @@ public abstract class AbstractNavigablePanelController extends AbstractPanelCont
     _parent=parent;
   }
 
+  /**
+   * Get the parent controller.
+   * @return the parent controller.
+   */
   public NavigatorWindowController getParent()
   {
     return _parent;
