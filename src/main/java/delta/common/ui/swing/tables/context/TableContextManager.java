@@ -27,6 +27,16 @@ public class TableContextManager
   }
 
   /**
+   * Remove all context data.
+   */
+  public void clear()
+  {
+    _rowContexts.clear();
+    _columnContexts.clear();
+    _cellContexts.clear();
+  }
+
+  /**
    * Get the context for a single cell.
    * @param row Row index (starting at 0).
    * @param column Column index (starting at 0).
