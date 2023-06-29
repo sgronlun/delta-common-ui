@@ -18,8 +18,8 @@ public interface CustomLabelCellRenderer<POJO,VALUE>
    * @param value Value to show.
    * @param isSelected Selection state.
    * @param hasFocus Focus state.
-   * @param row Row index (starting at 0).
-   * @param column Column index (starting at 0).
+   * @param row Row index in model (starting at 0).
+   * @param column Column index in model (starting at 0).
    * @param label Label to configure.
    */
   void configure(GenericTableController<POJO> table, VALUE value, boolean isSelected, boolean hasFocus, int row, int column, JLabel label);

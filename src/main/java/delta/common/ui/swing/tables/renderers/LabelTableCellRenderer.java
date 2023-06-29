@@ -38,7 +38,9 @@ public class LabelTableCellRenderer<POJO,VALUE> implements TableCellRenderer
   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
   {
     JLabel label=(JLabel)_renderer.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
-    _customRenderer.configure(_table,(VALUE)value,isSelected,hasFocus,row,column,label);
+    int rowIndex=table.convertRowIndexToModel(row);
+    int columnIndex=table.convertColumnIndexToModel(column);
+    _customRenderer.configure(_table,(VALUE)value,isSelected,hasFocus,rowIndex,columnIndex,label);
     return label;
   }
 
