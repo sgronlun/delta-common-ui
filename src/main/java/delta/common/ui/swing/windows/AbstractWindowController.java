@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.area.AbstractAreaController;
 import delta.common.utils.context.Context;
+import delta.common.utils.context.ContextUtils;
 import delta.common.utils.context.SimpleContextImpl;
 import delta.common.utils.misc.Preferences;
 import delta.common.utils.misc.TypedProperties;
@@ -268,7 +269,7 @@ public abstract class AbstractWindowController extends AbstractAreaController im
   @Override
   public <T> T getContextProperty(String propertyName, Class<T> valueClass)
   {
-    return _context.getValue(propertyName,valueClass);
+    return ContextUtils.getValue(_context,propertyName,valueClass);
   }
 
   /**
