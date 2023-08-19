@@ -56,6 +56,20 @@ public class ColumnsUtils
   }
 
   /**
+   * Configure a column to show a float value.
+   * @param column Column to use.
+   * @param minDigits Minimum number of digits.
+   * @param maxDigits Maximum number of digits.
+   * @param width Width to use.
+   */
+  public static final void configureFloatColumn(DefaultTableColumnController<?,Float> column, int minDigits, int maxDigits, int width)
+  {
+    column.setWidthSpecs(width,width,width);
+    NumberFormat format=LocalizedFormats.getRealNumberFormat(minDigits,maxDigits);
+    column.setCellRenderer(new GenericTableController.NumberRenderer(format));
+  }
+
+  /**
    * Configure a column to show a date/time value.
    * @param column Column to use.
    */
