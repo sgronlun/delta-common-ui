@@ -131,7 +131,7 @@ public class RangeEditorController
     JPanel panel=GuiFactory.buildPanel(new GridBagLayout());
     {
       GridBagConstraints c=new GridBagConstraints(0,0,1,1,0,0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(2,2,2,2),0,0);
-      panel.add(GuiFactory.buildLabel("Min:"),c);
+      panel.add(GuiFactory.buildLabel("Min:"),c); // I18n
       c.gridx=1;
       panel.add(_minValue.getComboBox(),c);
       if (_disposition==Disposition.VERTICAL)
@@ -142,7 +142,7 @@ public class RangeEditorController
       {
         c.gridx++;
       }
-      panel.add(GuiFactory.buildLabel("Max:"),c);
+      panel.add(GuiFactory.buildLabel("Max:"),c); // I18n
       c.gridx++;
       panel.add(_maxValue.getComboBox(),c);
       ItemSelectionListener<Integer> listenerMinDates=new ItemSelectionListener<Integer>()
