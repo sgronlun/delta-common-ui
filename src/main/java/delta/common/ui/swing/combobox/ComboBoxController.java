@@ -3,6 +3,7 @@ package delta.common.ui.swing.combobox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -252,6 +253,16 @@ public class ComboBoxController<T>
     _listenersEnabled=false;
     _comboBox.setSelectedItem(item);
     _listenersEnabled=true;
+  }
+
+  /**
+   * Sort entries by name.
+   */
+  public void sort()
+  {
+    List<ComboBoxItem<T>> items=new ArrayList<ComboBoxItem<T>>(_items);
+    Collections.sort(items,new ComboBoxItemComparator<T>());
+    updateItems(items);
   }
 
   /**

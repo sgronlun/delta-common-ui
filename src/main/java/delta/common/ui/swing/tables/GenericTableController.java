@@ -29,6 +29,7 @@ import javax.swing.table.TableRowSorter;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.selection.SelectionManager;
 import delta.common.ui.swing.tables.actions.ActionsManager;
+import delta.common.ui.swing.tables.context.TableContextManager;
 import delta.common.ui.swing.tables.renderers.ButtonRenderer;
 import delta.common.ui.swing.tables.selection.TableSelectionManager;
 import delta.common.utils.NumericTools;
@@ -65,6 +66,8 @@ public class GenericTableController<POJO>
   private ActionsManager<POJO> _actions;
   // Selection
   private TableSelectionManager<POJO> _selectionMgr;
+  // Contexts
+  private TableContextManager _contextMgr;
   // Preferences
   private TablePreferencesManager<POJO> _preferencesMgr;
 
@@ -80,6 +83,7 @@ public class GenericTableController<POJO>
     _actionListeners=new ArrayList<ActionListener>();
     _actions=new ActionsManager<>();
     _selectionMgr=new TableSelectionManager<POJO>(this);
+    _contextMgr=new TableContextManager();
     _preferencesMgr=new TablePreferencesManager<>(this);
   }
 
@@ -334,6 +338,15 @@ public class GenericTableController<POJO>
   public SelectionManager<POJO> getSelectionManager()
   {
     return _selectionMgr;
+  }
+
+  /**
+   * Get the context manager.
+   * @return the context manager.
+   */
+  public TableContextManager getContextManager()
+  {
+    return _contextMgr;
   }
 
   /**

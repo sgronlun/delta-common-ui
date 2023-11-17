@@ -66,17 +66,24 @@ public class FloatEditionController extends NumberEditionController<Float>
   protected Float parseValue(String text)
   {
     Float value=null;
-    try
+    if ((text!=null) && (text.length()>0))
     {
-      Number parsedValue=_format.parse(text);
-      if (parsedValue!=null)
+      try
       {
-        value=Float.valueOf(parsedValue.floatValue());
+        Number parsedValue=_format.parse(text);
+        if (parsedValue!=null)
+        {
+          value=Float.valueOf(parsedValue.floatValue());
+        }
+      }
+      catch(Exception e)
+      {
+        LOGGER.warn("Parsing error!",e);
       }
     }
-    catch(Exception e)
+    else
     {
-      LOGGER.warn("Parsing error!",e);
+      value=null;
     }
     Float ret=null;
     if (value!=null)

@@ -2,13 +2,15 @@ package delta.common.ui.swing.windows;
 
 import java.awt.Window;
 
+import delta.common.ui.swing.area.AreaController;
+import delta.common.utils.context.Context;
 import delta.common.utils.misc.TypedProperties;
 
 /**
  * Interface of a window controller.
  * @author DAM
  */
-public interface WindowController
+public interface WindowController extends AreaController
 {
   /**
    * Get the managed window.
@@ -65,10 +67,10 @@ public interface WindowController
   public <T> T getContextProperty(String propertyName, Class<T> valueClass);
 
   /**
-   * Get an aggregated view of the context properties.
-   * @return Some properties.
+   * Get the context.
+   * @return A context.
    */
-  public TypedProperties getContextProperties();
+  public Context getContext();
 
   /**
    * Get the child windows manager.

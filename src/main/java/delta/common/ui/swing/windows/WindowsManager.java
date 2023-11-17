@@ -26,6 +26,24 @@ public class WindowsManager
   }
 
   /**
+   * Get a free integer identifier.
+   * @return An unused identifier.
+   */
+  public int getFreeId()
+  {
+    int nb=_controllers.size();
+    for(int i=0;i<nb;i++)
+    {
+      String id=String.valueOf(i);
+      if (_controllers.get(id)==null)
+      {
+        return i;
+      }
+    }
+    return nb;
+  }
+
+  /**
    * Register a new window controller.
    * @param controller Window controller to register.
    */
